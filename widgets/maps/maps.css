@@ -1,0 +1,28 @@
+.maps.widget .large-icon
+{
+    -webkit-animation-name: bounce;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+
+.maps.view {
+    position: relative;
+}
+.maps .frame,
+.maps iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.maps .layers {
+    font-size: 2em;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.maps .layers button {
+    height: 100px;
+    width: 100px;
+}

@@ -1,0 +1,12 @@
+.wiki.widget,
+.wiki.view {
+    position: relative;
+}
+.wiki.view .description {
+    padding: 1em;
+    font-size: 1.5em;
+    overflow: scroll;
+}
+.wiki .city {
+    font-size: 3em;
+}

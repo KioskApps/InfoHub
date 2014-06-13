@@ -1,0 +1,63 @@
+<script src="../../../scripts/lib/jquery-2.1.1.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var selector = $('img');
+        var imgID = selector.attr('id');
+        var imgClass = selector.attr('class');
+        var imgURL = selector.attr('src');
+
+        $.get(imgURL, function(data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = $(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if(typeof imgID !== 'undefined') {
+                $svg = $svg.attr('id', imgID);
+            }
+            // Add replaced image's classes to the new SVG
+            if(typeof imgClass !== 'undefined') {
+                $svg = $svg.attr('class', imgClass +' replaced-svg');
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns:a');
+
+            // Replace image with new SVG
+            selector.replaceWith($svg);
+        }, 'xml');
+    });
+</script>
+<style>
+    .code-02d {
+        fill: blue;
+        -webkit-animation-name: strafe;
+        -webkit-animation-duration: 3s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+    }
+    @-webkit-keyframes strafe {
+        0% {
+            -webkit-transform: translateX(0);
+        }
+        50% {
+            -webkit-transform: translateX(5px);
+        }
+        100% {
+            -webkit-transform: translateX(0px);            
+        }
+    }
+    @-webkit-keyframes rock {
+        0% {
+            -webkit-transform: rotate(0);
+        }
+        50% {
+            -webkit-transform: rotate(15deg);
+        }
+        100% {
+            -webkit-transform: rotate(0px);            
+        }
+    }
+</style>
+
+<img src="03d.svg" class="code-02d" alt=""/>

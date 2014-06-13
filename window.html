@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        
+        <!-- Main Styles -->
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/loading.css">
+        <link rel="stylesheet" href="styles/slider.css">
+        
+        <!-- Vendor Scripts -->
+        <script src="scripts/lib/jquery-2.1.1.min.js"></script>
+        <script src="scripts/lib/jquery.mousewheel.min.js"></script>
+        <script src="scripts/lib/jquery.velocity.min.js"></script>
+
+        <!-- Main / Objects -->
+        <script src="scripts/main.js"></script>
+        <script src="scripts/loading.js"></script>
+        <script src="scripts/sandbox.js"></script>
+        <script src="scripts/geocoding.js"></script>
+        <script src="scripts/places.js"></script>
+        <script src="scripts/slider.js"></script>
+        <script src="scripts/objects/widget.js"></script>
+        
+        <!-- Widget Files -->
+        <script src="widgets/demo/demo.js"></script>
+        <link rel="stylesheet" href="widgets/demo/demo.css">
+        
+        <script src="widgets/defineLocation/defineLocation.js"></script>
+        <link rel="stylesheet" href="widgets/defineLocation/defineLocation.css">
+                
+        <script src="widgets/timezone/timezone.js"></script>
+        <link rel="stylesheet" href="widgets/timezone/timezone.css">
+        
+        <script src="widgets/maps/maps.js"></script>
+        <link rel="stylesheet" href="widgets/maps/maps.css">
+        
+        <script src="widgets/wiki/wiki.js"></script>
+        <link rel="stylesheet" href="widgets/wiki/wiki.css">
+        
+        <script src="widgets/weather/weather.js"></script>
+        <link rel="stylesheet" href="widgets/weather/weather.css">
+        
+        <script src="widgets/dining/dining.js"></script>
+        <link rel="stylesheet" href="widgets/dining/dining.css">
+        
+        <script src="widgets/entertainment/entertainment.js"></script>
+        <link rel="stylesheet" href="widgets/entertainment/entertainment.css">
+        
+        <script src="widgets/shopping/shopping.js"></script>
+        <link rel="stylesheet" href="widgets/shopping/shopping.css">
+        
+        <script src="widgets/travel/travel.js"></script>
+        <link rel="stylesheet" href="widgets/travel/travel.css">
+        
+        <script src="widgets/hotels/hotels.js"></script>
+        <link rel="stylesheet" href="widgets/hotels/hotels.css">
+        
+        <script src="widgets/finance/finance.js"></script>
+        <link rel="stylesheet" href="widgets/finance/finance.css">
+    </head>
+    <svg id="svg-source" height="0" version="1.1" 
+        xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%" 
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g id="svg-icon-map-pin" data-iconmelon="Batch:15ff690c7357393d00e269e7e80c041f">
+            <path id="pin-2"  d="M16,0C9.374,0,4,5.374,4,12s12,20,12,20s12-13.374,12-20S22.626,0,16,0z M16,20
+            c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S20.418,20,16,20z M16,8c-2.208,0-4,1.792-4,4s1.792,4,4,4s4-1.792,4-4S18.208,8,16,8
+            z"></path>
+        </g>
+        <g id="svg-icon-clock" data-iconmelon="Batch:554ad92c1c498162349c2f3511ad5615">
+            <path id="clock"  d="M16,0C7.164,0,0,7.164,0,16s7.164,16,16,16s16-7.164,16-16S24.836,0,16,0z M16,28
+            C9.374,28,4,22.626,4,16S9.374,4,16,4s12,5.374,12,12S22.626,28,16,28z M22,14h-4v-4c0-1.106-0.896-2-2-2s-2,0.894-2,2v6
+            c0,1.106,0.896,2,2,2h6c1.106,0,2-0.894,2-2S23.106,14,22,14z"></path>
+        </g>
+        <g id="svg-icon-cloud" data-iconmelon="Batch:6aac8220c1004f9a7947a4cd0c243c1d">
+            <path id="cloud"  d="M0,18c0-4.418,3.582-8,8-8c0.761,0,1.481,0.14,2.179,0.338C10.944,6.718,14.152,4,18,4
+            c4.418,0,8,3.582,8,8c0,0.706-0.122,1.378-0.292,2.03C25.806,14.024,25.899,14,26,14c3.313,0,6,2.688,6,6l0,0v2c0,3.313-2.687,6-6,6
+            H8c-4.418,0-8-3.582-8-8l0,0V18z"></path>
+        </g>
+    </svg>
+    <body>
+        <main class="fullscreen">
+            <header>
+                <div class="title">
+                    <div class="name">info<em>hub</em></div>
+                </div>
+                <button class="menu">
+                    <div class="icon"><div></div><div></div><div></div></div>
+                </button>
+            </header>
+            <div class="divider"></div>
+            <section class="content">
+                <div class="display">
+                    <div class="static-widgets">
+                        <div class="main">
+                            <div class="widgets">
+                                <div class="location"></div>
+                                <div class="supplemental-widgets"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="active">
+                        <div id="supplemental-view-panel"></div>
+                        <div id="widgets-container"><div id="widgets" class="widgets"></div></div>
+                    </div>
+                </div>
+                <div id="view-panel"></div>
+            </section>
+        </main>
+    
+        <iframe id="scripts-sandbox" class="hidden" src="scripts/scripts_sandbox.html"></iframe>
+    </body>
+</html>

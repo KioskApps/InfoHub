@@ -1,0 +1,88 @@
+.loading {
+    background: rgba(0, 0, 0, 0.75);
+    color: #eee;
+    font-size: 2em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.loading .circle {
+    position: absolute;
+    height: 128px;
+    left: calc(50% - 64px);
+    top: calc(50% - 64px);
+    width: 128px;
+    -webkit-transform: scale(0.6);
+}
+
+.loading .dot{
+    background-color: transparent;
+    border-radius: 50%;
+    position: absolute;
+    height: 18%;
+    width: 18%;
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.04s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: linear;
+}
+
+.loading .d1 {
+    left: 0;
+    top: 40%;
+    -webkit-animation-delay: 0.0s;
+}
+
+.loading .d2 {
+    left: 12%;
+    top: 12%;
+    -webkit-animation-delay: 0.13s;
+}
+
+.loading .d3 {
+    left: 40%;
+    top: 0;
+    -webkit-animation-delay: 0.26s;
+}
+
+.loading .d4 {
+    right: 12%;
+    top: 12%;
+    -webkit-animation-delay: 0.39s;
+}
+
+.loading .d5 {
+    right: 0;
+    top: 40%;
+    -webkit-animation-delay: 0.52s;
+}
+
+.loading .d6 {
+    bottom: 12%;
+    right: 12%;
+    -webkit-animation-delay: 0.65s;
+}
+
+.loading .d7 {
+    bottom: 0;
+    left: 40%;
+    -webkit-animation-delay: 0.78s;
+}
+
+.loading .d8{
+    bottom: 12%;
+    left: 12%;
+    -webkit-animation-delay: 0.91s;
+}
+
+@-webkit-keyframes fade{
+    0%{
+        background-color: #ffb800;
+    }
+    100%{
+        background-color: transparent;
+    }
+}

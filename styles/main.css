@@ -1,0 +1,585 @@
+/*******************************************************************************
+            Fonts 
+*******************************************************************************/
+@font-face
+{
+    font-family: 'exobold';
+    src: url('../fonts/exo-bold-webfont.eot');
+    src: url('../fonts/exo-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/exo-bold-webfont.woff') format('woff'),
+         url('../fonts/exo-bold-webfont.ttf') format('truetype'),
+         url('../fonts/exo-bold-webfont.svg#exobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face
+{
+    font-family: 'exolight';
+    src: url('../fonts/exo-light-webfont.eot');
+    src: url('../fonts/exo-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/exo-light-webfont.woff') format('woff'),
+         url('../fonts/exo-light-webfont.ttf') format('truetype'),
+         url('../fonts/exo-light-webfont.svg#exolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face
+{
+    font-family: 'exoregular';
+    src: url('../fonts/exo-regular-webfont.eot');
+    src: url('../fonts/exo-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/exo-regular-webfont.woff') format('woff'),
+         url('../fonts/exo-regular-webfont.ttf') format('truetype'),
+         url('../fonts/exo-regular-webfont.svg#exoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face
+{
+    font-family: 'exothin';
+    src: url('../fonts/exo-thin-webfont.eot');
+    src: url('../fonts/exo-thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/exo-thin-webfont.woff') format('woff'),
+         url('../fonts/exo-thin-webfont.ttf') format('truetype'),
+         url('../fonts/exo-thin-webfont.svg#exothin') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'tiennebold';
+    src: url('../fonts/tienne-bold-webfont.eot');
+    src: url('../fonts/tienne-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/tienne-bold-webfont.woff') format('woff'),
+         url('../fonts/tienne-bold-webfont.ttf') format('truetype'),
+         url('../fonts/tienne-bold-webfont.svg#tiennebold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+* {
+    box-sizing: border-box;
+    font-size: 1em;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+html, 
+body {
+    color: #fff;
+    font-family: 'tiennebold';
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.hidden {
+    display: none;
+}
+
+/*******************************************************************************
+            Main Fullscreen 
+*******************************************************************************/
+main.fullscreen {
+    background: url('../images/background3.png') 50% 0 repeat fixed;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+}
+
+/*******************************************************************************
+            Header 
+*******************************************************************************/
+main.fullscreen > header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding:0 2em;
+}
+main.fullscreen > header .title 
+{
+    background-color: #000;
+    padding: .5em 1em;
+}
+main.fullscreen > header .title .name
+{
+    font-size: 4em;
+}
+main.fullscreen > header .title em
+{
+    color: #0CF;
+    font-style: normal;
+}
+main.fullscreen > header .menu
+{
+    background-color:#000;
+    border:none;
+    width: 80px;
+    padding: 0 1em;
+    outline: none;
+}
+main.fullscreen > header .menu .icon
+{
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+main.fullscreen > header .menu .icon div
+{
+    background-color:#fff;
+    height:4px;
+    width:80%;
+    -webkit-transition-duration: .1s;
+    -webkit-transition-delay: 0;
+}
+
+main.fullscreen > header .menu.active .icon div,
+main.fullscreen > header .menu:active .icon div
+{
+    background-color:#0CF;
+}
+
+main.fullscreen .divider
+{
+    height:4px;
+    background-color:#fff;
+    margin:0 2em;
+}
+
+/*******************************************************************************
+            Views 
+*******************************************************************************/
+section.content {
+    overflow: hidden;
+    width:100%;
+    height:100%;
+    display:flex;
+    
+}
+section.content>div
+{
+    width:100%;
+}
+
+section.content>.display
+{
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+}
+
+section.content .static-widgets
+{
+    padding:2em;
+}
+section.content .static-widgets figure
+{
+    margin:0;
+}
+section.content .static-widgets .main
+{
+    background-color:#000;
+    padding:.5em 1em;
+    flex:1;
+    display:flex;
+    justify-content: center;
+}
+section.content .static-widgets .main .widgets .location
+{
+    display:inline-block;
+    vertical-align: middle;
+    margin:1em;
+}
+section.content .static-widgets .main .widgets .widget
+{
+    margin:0 1em;
+}
+section.content .static-widgets .main .widgets .widget .visual,
+section.content .static-widgets .main .widgets .widget .text
+{
+    vertical-align:middle;
+    margin-right:1em;
+}
+.supplemental-widgets
+{
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: stretch;
+}
+
+.supplemental-widgets .widget
+{
+    display:flex;
+    margin: 0 1em;
+}
+.supplemental-widgets .widget .content
+{
+    border: solid 1px;
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+}
+.supplemental-widgets .widget .content .visual
+{
+    padding:1em;
+    color:#000;
+    background-color:#fff;
+}
+.supplemental-widgets .widget .content .visual .small-icon
+{
+    display:none;
+}
+.supplemental-widgets .widget .content .text
+{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.supplemental-widgets .title
+{
+    color:#0CF;
+    font-size:2.4em;
+}
+.supplemental-widgets .title .touch-icon
+{
+	margin: 1px 2px;
+	width: 10px;
+	height: 10px;
+}
+.supplemental-widgets .description
+{
+    font-style:italic;
+}
+
+/*minimized supplemental widgets*/
+.display.shared .supplemental-widgets
+{
+    flex-direction:column;
+}
+.supplemental-widgets .widget.small .large-icon
+{
+    display:none;
+}
+.supplemental-widgets .widget.small .content .visual .small-icon
+{
+    display:block;
+    -webkit-animation-name: bounce;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+.supplemental-widgets .widget.small .content .visual .small-icon.first{-webkit-animation-delay:300ms;}
+.supplemental-widgets .widget.small .content .visual .small-icon.second{-webkit-animation-delay:600ms;}
+.supplemental-widgets .widget.small .content .visual .small-icon.third{-webkit-animation-delay:900ms;}
+.supplemental-widgets .widget.small .content
+{
+    border:none;
+}
+.supplemental-widgets .widget.small .visual
+{
+    background-color:#000;
+}
+
+section.content>.display>.active
+{
+    overflow:auto;
+    display:flex;
+}
+section.content>.display.shared>.active
+{
+    flex:1.4;
+}
+#widgets-container
+{
+    overflow:auto;
+}
+
+#view-panel
+{
+    flex: 0 0 0;
+    overflow: auto;
+    position: relative;
+    transition: 0.25s all;
+    
+    display:flex;
+    flex-direction:column;
+
+}
+#view-panel.visible
+{
+    flex: 0 0 50%;
+}
+
+#supplemental-view-panel
+{
+    flex: 0 0 0;
+    overflow: auto;
+    position: relative;
+    transition: 0.25s all;
+
+    background: rgb(242,130,91);
+    background: -moz-linear-gradient(top,  rgba(242,130,91,1) 0%, rgba(229,91,43,1) 50%, rgba(240,113,70,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,130,91,1)), color-stop(50%,rgba(229,91,43,1)), color-stop(100%,rgba(240,113,70,1)));
+    background: -webkit-linear-gradient(top,  rgba(242,130,91,1) 0%,rgba(229,91,43,1) 50%,rgba(240,113,70,1) 100%);
+    background: -o-linear-gradient(top,  rgba(242,130,91,1) 0%,rgba(229,91,43,1) 50%,rgba(240,113,70,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(242,130,91,1) 0%,rgba(229,91,43,1) 50%,rgba(240,113,70,1) 100%);
+    background: linear-gradient(to bottom,  rgba(242,130,91,1) 0%,rgba(229,91,43,1) 50%,rgba(240,113,70,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2825b', endColorstr='#f07146',GradientType=0 );
+}
+.display #supplemental-view-panel.visible
+{
+    flex:0 0 50%;
+}
+.display.shared #supplemental-view-panel.visible
+{
+    flex:0 0 100%;
+}
+
+.view .button:active
+{
+    -webkit-transform:scale(.9);
+}
+
+#view-panel .view
+{
+    padding:2em;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+#view-panel .view>header
+{
+    padding: 1em;
+    background-color: #000;
+    font-size: 2em;
+    display:flex;
+    justify-content: space-between;
+}
+#view-panel .view>header .close-button
+{
+    color:#0cf;
+}
+#view-panel .view .view-content
+{
+    flex:1;
+    background-color:rgba(255,255,255,.2);
+    border:solid 1px rgba(255,255,255,.3);
+    border-top:none;
+    padding:1em;
+    overflow:auto;
+}
+
+/*******************************************************************************
+            Widgets 
+*******************************************************************************/
+#widgets {
+    display:inline-flex;
+    flex-flow:row wrap;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100%;
+    padding: 1%;
+}
+.middle.icons #widgets
+{
+    display:flex;
+    flex-flow:wrap;
+    flex-direction: row;
+}
+.middle.icons #widgets figure footer
+{
+    font-size:3em !important;
+}
+
+#widgets figure {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 100%);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.2);
+    margin: 1em;
+    overflow: hidden;
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    width:500px;
+    white-space: normal;
+}
+#widgets figure .content
+{
+    position:relative;
+    overflow:hidden;
+    height:220px;
+}
+#widgets figure footer
+{
+    flex:2;
+    background-color:#000;
+    color:#fff;
+    text-transform: lowercase;
+    -webkit-transition-duration: .3s;
+    padding:.5em 1em;
+}
+#widgets figure footer .title
+{
+    font-size:2em;
+    color:#0cf;
+}
+#widgets figure footer .title .touch-icon
+{
+	margin: 1px 2px;
+	width: 10px;
+	height: 10px;
+}
+#widgets figure footer .instructions
+{
+    font-style:italic;
+    font-size:1em;
+}
+
+/*******************************************************************************
+            Touch Icon 
+*******************************************************************************/
+
+.touch-icon-wrap {
+	text-align: center;
+    display:inline-block;
+    vertical-align:middle;
+    margin:0 .6em;
+}
+
+.touch-icon {
+	display: inline-block;
+	font-size: 0px;
+	margin: 2px 3px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	text-align: center;
+	position: relative;
+	z-index: 10;
+	color: #0cf;
+}
+
+.touch-icon:after {
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.touch-icon:before {
+	background-color: #0cf;
+}
+
+/* Sonar Effect */
+.touch-icon-effect .touch-icon {
+	background: rgba(0, 204, 255, 0.7);
+
+	-webkit-transition: -webkit-transform ease-out 0.1s, background .5s;
+	-webkit-transition: -webkit-transform ease-out 0.1s, background .5s;
+	-webkit-transition: -webkit-transform ease-out 0.1s, background .5s;
+	-webkit-transition: -webkit-transform ease-out 0.1s, background .5s;
+	transition: transform ease-out 0.1s, background .5s;
+}
+
+.touch-icon-effect .touch-icon:after {
+	top: 0;
+	left: 0;
+	padding: 0;
+	z-index: -1;
+
+	-webkit-box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7);
+	box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7);
+	filter: alpha(opacity=0);
+	opacity: 0;
+
+	-webkit-transform: scale(0.3);
+	transform: scale(0.3);
+}
+
+.touch-icon-effect .touch-icon{
+	background: rgba(0, 204, 255,0.05);
+
+	-webkit-transform: scale(0.5);
+	transform: scale(0.5);
+	color: #fff;
+}
+
+.touch-icon-effect .touch-icon {
+	-webkit-animation: sonarEffect 1.3s ease-out 75ms infinite;
+	animation: sonarEffect 1.3s ease-out 75ms infinite;
+}
+
+/* Chrome, mobile browser support  */
+@keyframes "sonarEffect" {
+ 0% {
+   	filter: alpha(opacity=30);
+   	opacity: 0.3;
+ }
+ 40% {
+   	filter: alpha(opacity=50);
+   	opacity: 0.5;
+   	-webkit-box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   	box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+ }
+ 100% {
+    -webkit-box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   	box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   	-webkit-transform: scale(1.5);
+   	transform: scale(1.5);
+   	filter: alpha(opacity=0);
+   	opacity: 0;
+ }
+
+}
+
+@-webkit-keyframes "sonarEffect" {
+ 0% {
+   filter: alpha(opacity=30);
+   opacity: 0.3;
+ }
+ 40% {
+   filter: alpha(opacity=50);
+   opacity: 0.5;
+   -webkit-box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+ }
+ 100% {
+   -webkit-box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   box-shadow: 0 0 0 2px rgba(0, 204, 255, 0.7), 0 0 10px 10px #000, 0 0 0 10px rgba(0, 204, 255, 0.9);
+   -webkit-transform: scale(1.5);
+   transform: scale(1.5);
+   filter: alpha(opacity=0);
+   opacity: 0;
+ }
+
+}
+
+/*******************************************************************************
+            IconMelon Icons 
+*******************************************************************************/
+.iconmelon,
+.im {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: block;
+  fill: #FFF;
+}
+.iconmelon:after,
+.im:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,20 @@
+/*******************************************************************************
+            Slider
+*******************************************************************************/
+.slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.slide {
+    display: inline-block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.slide.left {
+    left: -100%;
+}
+.slide.right {
+    left: 100%;
+}

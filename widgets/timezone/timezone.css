@@ -1,0 +1,317 @@
+.timezone.widget .clock-face {
+    margin-bottom:1em;
+}
+.timezone.widget .second
+{
+    display:none;
+}
+.timezone.widget .time
+{
+    text-align:center;
+}
+.timezone.widget .separator:nth-child(4)
+{
+    display:none;
+}
+
+.timezone.view {
+    display: flex;
+    flex-direction: column;
+}
+.timezone.view .zones {
+    align-content: space-around;
+    display: flex;
+    flex: 2;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.timezone.view .zones .clock {
+    padding: 1em;
+    width: 33.3%;
+}
+.timezone.view .zones .clock .name {
+    font-size: 1.25rem;
+    margin-top: 1em;
+}
+
+.timezone .clock .text {
+    display: inline-block;
+    vertical-align: middle;
+}
+.timezone .clock .text .name {
+    font-size: 2em;
+}
+.timezone .clock .text .city {
+    font-size: 1.5em;
+}
+.timezone .clock .text .time {
+    float: right;
+    font-size: 2em;
+    margin-right: 1em;
+    margin-top: 1em;
+}
+.timezone .clock .text .time .hour {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* View Clock */
+.timezone .clock-face {
+    border: 10px double #fff;
+    border-radius: 50%;
+    display: inline-block;
+    height: 200px;
+    width: 200px;
+    vertical-align: middle;
+}
+
+.timezone .clock-face .hour-mark {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;  
+    width: 0px;
+}
+
+.timezone .clock-face .hour-mark:after {
+    background: rgba(255, 255, 255, 0.8);
+    content: '';
+    height: 8px;
+    left: -2px;
+    position: absolute;
+    top: -90px;
+    width: 4px;
+}
+
+.timezone .clock-face .min-mark {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+.timezone .clock-face .min-mark:after {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    content: '';
+    left: -1px;  
+    height: 2px;
+    position: absolute;
+    top: -85px;
+    width: 2px;
+}
+
+.timezone .clock-face .arrow-hour {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.timezone .clock-face .arrow-hour:after {
+    background-image: linear-gradient(#fff 0%, #bbb 100%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 90px;
+    left: -3px;
+    position: absolute;
+    top: -70px;
+    width: 6px;
+}
+
+.timezone .clock-face .arrow-minute {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.timezone .clock-face .arrow-minute:after {
+    background-image: linear-gradient(#fff 0%, #bbb 100%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 110px;
+    left: -3px;
+    position: absolute;
+    top: -90px;
+    width: 6px;
+}
+
+.timezone .clock-face .arrow-second {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.timezone .clock-face .arrow-second:after {
+    background-image: linear-gradient(#f00 0%, #a00 100%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 110px;
+    left: -1px;
+    position: absolute;
+    top: -90px;
+    width: 2px;
+}
+
+.timezone .clock-face .arrow-dot {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.timezone .clock-face .arrow-dot:before {
+    background: #c6c6c6;
+    border-radius: 10px;
+    content: '';
+    height: 10px;
+    left: -5px;
+    position: absolute;
+    top: -5px;
+    width: 10px;
+}
+
+.timezone .clock-face .arrow-dot:after {
+    background: #161617;
+    border-radius: 4px;
+    content: ''; 
+    height: 4px;
+    left: -2px;
+    position: absolute;
+    top: -2px;  
+    width: 4px;
+}
+
+/* Widget Clock */
+.widget.timezone .clock-face {
+    border-radius: 50%;
+    display: inline-block;
+    height: 70px;
+    width: 70px;
+    vertical-align: middle;
+}
+
+.widget.timezone .clock-face .hour-mark {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.widget.timezone .clock-face .hour-mark:after {
+    background: #000;
+    content: '';
+    height: 3px;
+    left: -2px;
+    position: absolute;
+    top: -31.5px;
+    width: 1.4px;
+}
+
+.widget.timezone .clock-face .min-mark {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+.widget.timezone .clock-face .min-mark:after {
+    content: none;
+}
+
+.widget.timezone .clock-face .arrow-hour {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.widget.timezone .clock-face .arrow-hour:after {
+    background-image:none;
+    background-color:#000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 31.5px;
+    left: -1.05px;
+    position: absolute;
+    top: -24.5px;
+    width: 2px;
+}
+
+.widget.timezone .clock-face .arrow-minute {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.widget.timezone .clock-face .arrow-minute:after {
+    background-image:none;
+    background-color:#000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 38.5px;
+    left: -1.05px;
+    position: absolute;
+    top: -31.5px;
+    width: 2px;
+}
+
+.widget.timezone .clock-face .arrow-second {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.widget.timezone .clock-face .arrow-second:after {
+    background-image:none;
+    background-color:#0CF;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+    content: '';
+    height: 38.5px;
+    left: -1px;
+    position: absolute;
+    top: -31.5px;
+    width: 2px;
+}
+
+.widget.timezone .clock-face .arrow-dot {
+    height: 0px;
+    left: 50%;
+    position: relative;
+    top: 50%;
+    width: 0px;
+}
+
+.widget.timezone .clock-face .arrow-dot:before {
+    background: #0CF;
+    border-radius: 10px;
+    content: '';
+    height: 3.5px;
+    left: -1.75px;
+    position: absolute;
+    top: -1.75px;
+    width: 3.5px;
+}
+
+.widget.timezone .clock-face .arrow-dot:after {
+    background: #fff;
+    border-radius: 4px;
+    content: ''; 
+    height: 1px;
+    left: -.5px;
+    position: absolute;
+    top: -.5px;  
+    width: 1px;
+}
