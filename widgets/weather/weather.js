@@ -97,8 +97,34 @@ weather.setDayData = function(day, data) {
         weather.replaceIconSvg(day.find('.icon'));
         day.find('.message').html(data.weather[0].main);
     }
+    if(!day.hasClass('notheme'))
+    {
+        weather.setTheme(day, data);
+    }
     return day;
 };
+weather.setTheme = function(day, data)
+{
+    var backgroundColor = '#EEB932';
+    if(Math.round(data.temp.day) > 90)
+    {
+        backgroundColor = '#C50606';
+    }
+    if(Math.round(data.temp.day) < 70)
+    {
+        backgroundColor = '#1CBBF8';
+    }
+    if((data.weather[0].main).toLowerCase() == 'clouds')
+    {
+        backgroundColor = '#666666';
+    }
+    if((data.weather[0].main).toLowerCase() == 'rain')
+    {
+        backgroundColor = '#7B45AD';
+    }
+    
+    day.css('background-color', backgroundColor);
+}
 
 weather.createLocationDiv = function() {
     return $('<div/>').addClass('location')
@@ -108,20 +134,23 @@ weather.createLocationDiv = function() {
 };
 weather.createDayDiv = function() {
     var div = $('<div/>').addClass('day');
-    div.append($('<img/>').addClass('icon'));
-    div.append($('<div/>').addClass('date'));
-    var temp = $('<div/>').addClass('temperature')
+    div.append($('<div/>').addClass('conditions')
+        .append($('<img/>').addClass('icon'))
+        .append($('<div/>').addClass('message'))
+        .append($('<div/>').addClass('humidity')));
+    div.append($('<div/>').addClass('data')
+        .append($('<div/>').addClass('date'))
+        .append($('<div/>').addClass('temperature')
             .append($('<div/>').addClass('temp'))
-            .append($('<div/>').addClass('min'))
-            .append($('<div/>').addClass('max'));
-    div.append(temp);
-    div.append($('<div/>').addClass('message'));
-    div.append($('<div/>').addClass('humidity'));
+            .append($('<div/>').addClass('variance')
+                .append($('<div/>').addClass('min'))
+                .append($('<div>-</div>').addClass('spacer'))
+                .append($('<div/>').addClass('max')))));
     return div;
 };
 weather.createWidgetDiv = function()
 {
-    var div = $('<div/>').addClass('day');
+    var div = $('<div/>').addClass('day').addClass('notheme');
     div.append($('<img/>').addClass('icon'));
     var temp = $('<div/>').addClass('temperature')
             .append($('<div/>').addClass('temp'));

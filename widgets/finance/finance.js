@@ -14,6 +14,7 @@ finance.setLocation = function(location) {
         'bank',
         'finance'
     ];
+    finance.w.find('.highlights').empty();
     var results = places.getNearbySearch('finance', location, types);
     
     results.onfinish = function() {
@@ -21,10 +22,23 @@ finance.setLocation = function(location) {
     };
 };
 
+finance.viewStart = function()
+{
+    finance.w.unbind('click');
+};
+finance.viewEnd = function()
+{
+    finance.w.unbind('click').click(function(e)
+    {
+        finance.toggleView(false);
+    });
+};
+
 finance.startHighlightUpdates = function(results) {
     finance.stopHighlightUpdates();
     
     var update = new finance.UpdateService(results);
+    update.results.triggerDiv.on('placesLoaded', function(){finance.w.trigger('placesLoaded');});
     update.start();
     finance.currentUpdateService = update;
 };
@@ -40,30 +54,66 @@ finance.UpdateService = function(results) {
     this.index = 0;
     this.running = true;
     
-    this.start = function() {
-        if (self.running) {
-            
-            self.updateWidget(finance.w);
-            self.updateView(finance.v);
-            self.index++;
-            
-            setTimeout(self.start, finance.UPDATE_INTERVAL);
+    this.start = function()
+    {
+        finance.v.find('.places-list').empty();
+        for(var i = 0; i < self.results.results.length; i++)
+        {
+            var div = self.results.getContentDiv(i);
+            if(div != undefined)
+            {
+                div.click(function(e)
+                {
+                    var index = $(this).data('index');
+                    var view = self.results.resultsDivs[index].viewDiv;
+                    self.highlightClickHandler(e, view);
+                });
+            }
+            finance.v.find('.places-list').append(div);
         }
+        self.update();
     };
-    this.stop = function() {
+    this.update = function()
+    {
+        if(self.running)
+        {
+            self.updateWidget(finance.w);
+            self.index++;
+            if(self.index > self.results.results.length)
+            {
+                self.index = 0;
+            }
+
+            setTimeout(self.update, finance.UPDATE_INTERVAL);
+        }
+    }
+    this.stop = function()
+    {
         self.running = false;
     };
     
-    this.highlightClickHandler = function(e) {
-        var index = $(e.target).closest('.highlight').attr('data-index');
-        var div = self.results.getDetailDiv(index);
-        finance.wv.find('.detail').replaceWith(div);
+    this.highlightClickHandler = function(e, view)
+    {
+        if(view == undefined)
+        {
+            $(e.currentTarget).clone().appendTo(finance.v.find('.detail').empty()).removeClass('highlight');
+        }
+        else
+        {
+            finance.v.find('.detail .content').detach().appendTo(finance.v.find('.places-list')).addClass('highlight');
+            view.appendTo(finance.v.find('.detail').empty()).removeClass('highlight');
+        }
     };
     
     this.updateWidget = function(widget)
     {
-        var divs = self.results.getContentDivs(self.index, 3, 'w');
-        var current = divs[1].addClass('current').click(self.highlightClickHandler);
+        var div = self.results.getContentDiv(self.index, 'w');
+        var current = div.addClass('current').click(function(e)
+        {
+            var index = $(this).data('index');
+            var view = self.results.resultsDivs[index].viewDiv;
+            self.highlightClickHandler(e, view);
+        });
         
         slider.navigateTo($('.slider', finance.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
     }
@@ -87,17 +137,5 @@ finance.UpdateService = function(results) {
             $(this).velocity({opacity:1, translateZ:0, translateX: position}, {'easing':[ 250, 25 ], 'delay': (starCount * 150)});
             starCount++;
         });
-    }
-    
-    this.updateView = function(view)
-    {
-        var divs = self.results.getContentDivs(self.index, 3);
-        var previous = divs[0].addClass('previous').click(self.highlightClickHandler);
-        var current = divs[1].addClass('current').click(self.highlightClickHandler);
-        var next = divs[2].addClass('next').click(self.highlightClickHandler);
-
-        view.find('.highlights .highlight.previous').replaceWith(previous);
-        view.find('.highlights .highlight.current').replaceWith(current);
-        view.find('.highlights .highlight.next').replaceWith(next);
     }
 };

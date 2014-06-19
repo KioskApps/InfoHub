@@ -4,6 +4,11 @@ var maps = {};
 //Global Variables
 maps.API_KEY = 'AIzaSyCEc-ILEMoraGX8sL0pMdgtfqSq2kOkleo';
 
+maps.layersArray = ['none', 'traffic', 'transit'];
+maps.layersIndex = 0;
+maps.layersUpdateTime = 10000;
+maps.layersUpdateInterval;
+
 
 maps.initialize = function() {
     $('<iframe/>').attr('src', 'widgets/maps/sandbox.html').appendTo(maps.wv.find('.frame'));
@@ -21,6 +26,8 @@ maps.setLocation = function(location) {
 
 maps.viewStart = function() {
     maps.setViewLocation(live.location);
+    maps.layersIndex = 0;
+    maps.layersUpdateTime = 10000;
     maps.v.find('.layers .traffic').click(function() {
         maps.setLayer(maps.v, 'traffic');
     });
@@ -30,6 +37,14 @@ maps.viewStart = function() {
     maps.v.find('.layers .none').click(function() {
         maps.setLayer(maps.v, 'none');
     });
+    maps.layersUpdate();
+    clearInterval(maps.layersUpdateInterval);
+    maps.layersUpdateInterval = setInterval(function()
+    {
+        maps.layersUpdate();
+    }, maps.layersUpdateTime);
+    
+    maps.w.trigger('markerReady');
 };
 
 maps.setViewLocation = function(location) {
@@ -73,7 +88,20 @@ maps.setLayer = function(selector, layer) {
         'widget': 'maps',
         'layer': layer
     });
+    $('.layers button', selector).removeClass('selected');
+    $('.layers .' + layer, selector).addClass('selected');
+    maps.layersIndex = maps.layersArray.indexOf(layer);
 };
+
+maps.layersUpdate = function()
+{
+    maps.setLayer(maps.v, maps.layersArray[maps.layersIndex]);
+    maps.layersIndex++;
+    if (maps.layersIndex > maps.layersArray.length - 1)
+    {
+        maps.layersIndex = 0;
+    }    
+}
 
 maps.setMarker = function(location) {
     maps.postMessage(maps.v, {

@@ -33,6 +33,7 @@ function Widget(name, html, appendElement, type) {
         initializeFunction('viewEnd');
         initializeFunction('widgetStart');
         initializeFunction('widgetEnd');
+        initializeFunction('toggleView');
         
         self.widget.click(function() {
             self.toggleView(false);
@@ -44,7 +45,7 @@ function Widget(name, html, appendElement, type) {
         
         return self;
     };
-    this.toggleView = function(dontHide)
+    this.toggleView = function(dontHide, surpressWidgetAnimation)
     {
         var toAdd = live.validateAddView(self.view, self.type);
 
@@ -54,7 +55,7 @@ function Widget(name, html, appendElement, type) {
         }
         else 
         {
-            self.removeViewAnimations();
+            self.removeViewAnimations(surpressWidgetAnimation);
         }
     };
     this.startView = function(added)
@@ -63,7 +64,7 @@ function Widget(name, html, appendElement, type) {
         self.js.viewStart();
         
         $('.close-button', self.view).unbind('click').click(function(e) {
-            self.widget.click();
+            self.toggleView(false, true);
         });
 
         if(self.view.hasClass('maps'))//lazy load for maps
@@ -107,9 +108,12 @@ function Widget(name, html, appendElement, type) {
             self.widget.trigger('addViewAnimationsComplete');
         }
     }
-    this.removeViewAnimations = function()
+    this.removeViewAnimations = function(surpressWidgetAnimation)
     {
-        self.widget.velocity({scale: .95}, {duration:100}).velocity({scale: 1}, {easing: [250, 10], duation:100});
+        if(surpressWidgetAnimation !== true)
+        {
+            self.widget.velocity({scale: .95}, {duration:100}).velocity({scale: 1}, {easing: [250, 10], duation:100});
+        }
         self.view.unbind('viewPanelHideComplete').on('viewPanelHideComplete', this.resetSupplementalWidgets);
         if(self.type == live.WidgetType.STANDARD)
         {
@@ -147,6 +151,10 @@ function Widget(name, html, appendElement, type) {
     }
     
     var initializeFunction = function(name) {
+        if(name == 'toggleView')
+        {
+            self.js[name] = self.toggleView;
+        }
         if (self.js[name] === undefined) {
             self.js[name] = function() {};
         }

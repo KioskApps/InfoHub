@@ -2,13 +2,13 @@ var map;
 var layers = {};
 var layersArray = [];
 var layersIndex = 0;
-var layerLastSet = 0;
-var layersUpdate = 10000;
-var layersTimeout = 60000;
 var marker;
 
 var currentLat;
 var currentLng;
+
+var lastTouchX;
+var lastTouchY;
 
 function initializeMap() {
     var script = document.createElement('script');
@@ -24,8 +24,7 @@ function initializeCallback() {
     layersArray.push('traffic');
     layersArray.push('transit');
     
-    drawMap();    
-    layerUpdate();
+    drawMap();
 }
 function drawMap() {
     var mapOptions = {
@@ -37,7 +36,30 @@ function drawMap() {
         'disableDefaultUI': true
     };
     
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    var mapCanvas = document.getElementById('map-canvas');
+    map = new google.maps.Map(mapCanvas, mapOptions);
+    mapCanvas.addEventListener('touchstart', function() {
+        lastTouchX = 0;
+        lastTouchY = 0;
+    });
+    mapCanvas.addEventListener('touchend', function() {
+        lastTouchX = 0;
+        lastTouchY = 0;
+    });
+    mapCanvas.addEventListener('touchmove', mapDragged);
+}
+function mapDragged(e) {
+    if (map) {
+        var newX = e.touches[0].screenX;
+        var newY = e.touches[0].screenY;
+        if (lastTouchX !== 0 && lastTouchY !== 0) {
+            var deltaX = lastTouchX - newX;
+            var deltaY = lastTouchY - newY;
+            map.panBy(deltaX, deltaY);
+        }
+        lastTouchX = newX;
+        lastTouchY = newY;
+    }
 }
 
 function setLayer(layer, noUpdate) {
@@ -50,19 +72,6 @@ function setLayer(layer, noUpdate) {
     if (layers[layer]) {
         layers[layer].setMap(map);
     }
-}
-
-function layerUpdate() {
-    setTimeout(function() {
-        if ((Date.now() - layerLastSet) > layersTimeout) {
-            setLayer(layersArray[layersIndex], true);
-            layersIndex++;
-            if (layersIndex > layersArray.length - 1) {
-                layersIndex = 0;
-            }
-        }
-        layerUpdate();
-    }, layersUpdate);
 }
 
 function setMarker(location) {

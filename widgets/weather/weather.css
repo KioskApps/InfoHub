@@ -1,7 +1,3 @@
-.weather.view {
-    display: flex;
-    flex-direction: column;
-}
 
 /* Widget */
 .widget.weather .icon {
@@ -26,6 +22,26 @@
 .widget.weather .message {
     font-size: 1.2em;
     text-align:center;
+}
+
+.weather.view {
+    display: flex;
+    flex-direction: column;
+}
+
+.weather.view .title-bar
+{
+    font-size: 2em;
+    background-color: #000;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: .5em 1em;
+    align-items: center;
+}
+.weather.view .title-bar>.title 
+{
+    font-size:1.5em;
 }
 
 /* Location */
@@ -53,56 +69,63 @@
 }
 
 /* Forecast */
-.weather .forecast {
-    align-content: space-around;
+.weather .forecast
+{
     display: flex;
-    flex: 1;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-content: space-around;
     justify-content: space-around;
-}
-.weather .forecast .day:first-child .date:before {
-    color: #ffb800;
-    content: "Today, ";
 }
 .weather .forecast .day {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 100%);
     background-color: rgba(255, 255, 255, 0.1);
-    border: solid 1px rgba(255, 255, 255, 0.2);
-    padding: 0.5em;
+    padding: 1em;
+    display:flex;
+    align-items: center;
+    margin:1em;
+    width:47%;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.2);
 }
 .weather .forecast .day.active {
     -webkit-transform: scale(1.1);
 }
 
 /* Day */
+.weather .conditions
+{
+    margin-right:2em;
+    text-align:center;
+}
+.weather .conditions .icon
+{
+    fill: #fff;
+    height: 75px;
+    width: 75px;
+}
 .weather .date {
     font-size: 1.25em;
     font-weight: bold;
 }
 .weather .temperature .temp {
-    color: #ffb800;
-    display: inline-block;
     font-size: 3em;
-    font-weight: bold;
-    padding: 0.5em;
 }
 .weather .temperature .temp:after {
     content: " °F";
 }
-.weather .temperature .min {
-    color: #00a;
-    display: inline-block;
+.weather .temperature .variance div
+{
     font-size: 2em;
-    position: relative;
-    top: 10px;
-    vertical-align: top;
+    display:inline-block;
+    vertical-align: middle;
 }
-.weather .temperature .max {
-    bottom: -10px;
-    color: #a00;
-    display: inline-block; 
-    position: relative;
-    font-size: 2em;   
+.weather .temperature .min:after {
+    content: "°F";
+}
+.weather .temperature .spacer {
+    margin: 0 .5em;
+}
+.weather .temperature .max:after {
+    content: "°F";
 }
 .weather .message {
     font-size: 1.5em;
@@ -112,11 +135,6 @@
 }
 .weather .humidity:after {
     content: "%";
-}
-.weather .icon {
-    fill: #ffb800;
-    height: 200px;
-    width: 200px;
 }
 .weather .icon.code-01d {
     -webkit-animation-name: spin;

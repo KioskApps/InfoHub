@@ -61,3 +61,39 @@
     font-size: 1.3em;
     padding: 1em;
 }
+
+.view.define-location .cities
+{
+    display:flex;
+    flex-flow:row wrap;
+}
+.view.define-location .cities .city
+{
+    font-size: 2em;
+    background-color: #000;
+    width: 48%;
+    margin: .3em;
+    padding: .5em 1em;
+    transition:transform .2s ease;
+}
+.view.define-location .cities .city:active
+{
+    -webkit-transform: scale(.9);
+}
+.view.define-location .cities .city .icon
+{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1em;
+}
+.view.define-location .cities .city .icon .iconmelon
+{
+    width:68px;
+    height:68px;
+}
+.view.define-location .cities .city .title
+{
+    display: inline-block;
+    vertical-align: middle;
+    color:#0CF;
+}

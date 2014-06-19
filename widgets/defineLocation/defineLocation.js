@@ -33,6 +33,13 @@ defineLocation.viewStart = function()
         live.updateLocation();
         defineLocation.w.click();
     });
+    $('.city', defineLocation.v).unbind('click').click(function(e)
+    {
+        var city = $(this).find('.title').html();
+        $('#location', defineLocation.v).val(city);
+        live.updateLocation();
+        defineLocation.w.click();
+    });
 };
 defineLocation.viewEnd = function() {
     $('#location', defineLocation.v).val('');

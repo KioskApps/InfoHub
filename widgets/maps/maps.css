@@ -8,6 +8,8 @@
 
 .maps.view {
     position: relative;
+    overflow: hidden; 
+    margin-bottom: -5px;
 }
 .maps .frame,
 .maps iframe {
@@ -16,13 +18,54 @@
     width: 100%;
 }
 
-.maps .layers {
+.maps .title-bar
+{
     font-size: 2em;
     position: absolute;
-    right: 0;
-    top: 0;
+    background-color: #000;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5em 1em;
 }
-.maps .layers button {
-    height: 100px;
-    width: 100px;
+.maps .title-bar>.title 
+{
+    font-size:1.5em;
+}
+.maps .layers button 
+{
+    border: solid 2px #fff;
+    background-color: transparent;
+    color: #fff;
+    padding: 0;
+    display:inline-flex;
+    outline:none;
+    align-items:center;
+}
+.maps .layers button .icon 
+{
+    padding: .2em .5em;
+    background-color:#fff;
+}
+.maps .layers button .icon svg
+{
+    fill:#000;
+}
+.maps .layers button.selected
+{
+    border: solid 2px #0cf;
+    color:#0cf;
+}
+.maps .layers button.selected .icon 
+{
+    background-color:#0cf;
+}
+.maps .layers button.selected .icon svg
+{
+    fill:#fff;
+}
+.maps .layers button .title
+{
+    padding: .2em .5em;
 }

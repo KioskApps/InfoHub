@@ -19,6 +19,7 @@ travel.setLocation = function(location) {
         'train_station',
         'travel_agency'
     ];
+    travel.w.find('.highlights').empty();
     var results = places.getNearbySearch('travel', location, types);
     
     results.onfinish = function() {
@@ -26,10 +27,23 @@ travel.setLocation = function(location) {
     };
 };
 
+travel.viewStart = function()
+{
+    travel.w.unbind('click');
+};
+travel.viewEnd = function()
+{
+    travel.w.unbind('click').click(function(e)
+    {
+        travel.toggleView(false);
+    });
+};
+
 travel.startHighlightUpdates = function(results) {
     travel.stopHighlightUpdates();
     
     var update = new travel.UpdateService(results);
+    update.results.triggerDiv.on('placesLoaded', function(){travel.w.trigger('placesLoaded');});
     update.start();
     travel.currentUpdateService = update;
 };
@@ -38,8 +52,6 @@ travel.stopHighlightUpdates = function() {
         travel.currentUpdateService.stop();
     }
 };
-
-
 travel.UpdateService = function(results) {
     var self = this;
     
@@ -47,30 +59,66 @@ travel.UpdateService = function(results) {
     this.index = 0;
     this.running = true;
     
-    this.start = function() {
-        if (self.running) {
-            
-            self.updateWidget(travel.w);
-            self.updateView(travel.v);
-            self.index++;
-            
-            setTimeout(self.start, travel.UPDATE_INTERVAL);
+    this.start = function()
+    {
+        travel.v.find('.places-list').empty();
+        for(var i = 0; i < self.results.results.length; i++)
+        {
+            var div = self.results.getContentDiv(i);
+            if(div != undefined)
+            {
+                div.click(function(e)
+                {
+                    var index = $(this).data('index');
+                    var view = self.results.resultsDivs[index].viewDiv;
+                    self.highlightClickHandler(e, view);
+                });
+            }
+            travel.v.find('.places-list').append(div);
         }
+        self.update();
     };
-    this.stop = function() {
+    this.update = function()
+    {
+        if(self.running)
+        {
+            self.updateWidget(travel.w);
+            self.index++;
+            if(self.index > self.results.results.length)
+            {
+                self.index = 0;
+            }
+
+            setTimeout(self.update, travel.UPDATE_INTERVAL);
+        }
+    }
+    this.stop = function()
+    {
         self.running = false;
     };
     
-    this.highlightClickHandler = function(e) {
-        var index = $(e.target).closest('.highlight').attr('data-index');
-        var div = self.results.getDetailDiv(index);
-        travel.wv.find('.detail').replaceWith(div);
+    this.highlightClickHandler = function(e, view)
+    {
+        if(view == undefined)
+        {
+            $(e.currentTarget).clone().appendTo(travel.v.find('.detail').empty()).removeClass('highlight');
+        }
+        else
+        {
+            travel.v.find('.detail .content').detach().appendTo(travel.v.find('.places-list')).addClass('highlight');
+            view.appendTo(travel.v.find('.detail').empty()).removeClass('highlight');
+        }
     };
     
     this.updateWidget = function(widget)
     {
-        var divs = self.results.getContentDivs(self.index, 3, 'w');
-        var current = divs[1].addClass('current').click(self.highlightClickHandler);
+        var div = self.results.getContentDiv(self.index, 'w');
+        var current = div.addClass('current').click(function(e)
+        {
+            var index = $(this).data('index');
+            var view = self.results.resultsDivs[index].viewDiv;
+            self.highlightClickHandler(e, view);
+        });
         
         slider.navigateTo($('.slider', travel.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
     }
@@ -94,17 +142,5 @@ travel.UpdateService = function(results) {
             $(this).velocity({opacity:1, translateZ:0, translateX: position}, {'easing':[ 250, 25 ], 'delay': (starCount * 150)});
             starCount++;
         });
-    }
-    
-    this.updateView = function(view)
-    {
-        var divs = self.results.getContentDivs(self.index, 3);
-        var previous = divs[0].addClass('previous').click(self.highlightClickHandler);
-        var current = divs[1].addClass('current').click(self.highlightClickHandler);
-        var next = divs[2].addClass('next').click(self.highlightClickHandler);
-
-        view.find('.highlights .highlight.previous').replaceWith(previous);
-        view.find('.highlights .highlight.current').replaceWith(current);
-        view.find('.highlights .highlight.next').replaceWith(next);
     }
 };
