@@ -19,6 +19,7 @@ finance.setLocation = function(location) {
     
     results.onfinish = function() {
         finance.startHighlightUpdates(results);
+        finance.w.trigger('placesLoaded');
     };
 };
 
@@ -38,7 +39,6 @@ finance.startHighlightUpdates = function(results) {
     finance.stopHighlightUpdates();
     
     var update = new finance.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){finance.w.trigger('placesLoaded');});
     update.start();
     finance.currentUpdateService = update;
 };

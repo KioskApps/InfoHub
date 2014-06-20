@@ -370,6 +370,8 @@ section.content>.display.shared>.active
 #widgets-container.shared::-webkit-scrollbar
 {
     display:block;
+    width: 30px;
+    height: 30px;
 }
 #widgets-container::-webkit-scrollbar-thumb
 {

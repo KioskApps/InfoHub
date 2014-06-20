@@ -1,8 +1,23 @@
 //Places Namespace
 var places = {};
+
+/**
+ * Stores callbacks for the message event to reference.
+ * @type object
+ */
 places.callbacks = {};
 
-places.getNearbySearch = function(widget, location, types) {
+/**
+ * Gets nearby businesses from the PlacesAPI. 
+ * @param {widget} widget - The widget object that is calling
+ *      the PlacesAPI.
+ * @param {location} location - The location object that defines the
+ *      location for the PlacesAPI to reference.
+ * @param {array} types - Array of types of locations to return.
+ * @returns {PlaceResults}
+ */
+places.getNearbySearch = function(widget, location, types)
+{
     var results = new places.PlaceResults(widget, null, location);
     
     places.nearbySearch(widget, function(data) {
@@ -11,6 +26,20 @@ places.getNearbySearch = function(widget, location, types) {
     
     return results;
 };
+
+/**
+ * Sends a message to the sandbox to make the actual PlacesAPI call for nearby businesses. 
+ * @param {widget} widget - The widget object that is calling
+ *      the PlacesAPI.
+ * @param {function()} callback - A callback function to be executed
+ *      when the sandbox posts are response message.
+ * @param {location} location - The location object that defines the
+ *      location for the PlacesAPI to reference.
+ * @param {array} types - Array of types of locations to return.
+ * @param {Number} pageKey - A key to determine the page of results 
+ *      that should be returned.
+ * @returns {undefined}
+ */
 places.nearbySearch = function(widget, callback, location, types, pageKey) {
     places.callbacks[widget] = callback;
     var options = {
@@ -26,6 +55,16 @@ places.nearbySearch = function(widget, callback, location, types, pageKey) {
         'options': options
     });
 };
+
+/**
+ * Sends a message to the sandbox to make a PlacesAPI call to get business detail. 
+ * @param {widget} widget - The widget object that is calling
+ *      the PlacesAPI.
+ * @param {function()} callback - A callback function to be executed
+ *      when the sandbox posts are response message.
+ * @param {string} reference - ???
+ * @returns {undefined}
+ */
 places.detail = function(widget, callback, reference) {
     places.callbacks[widget] = callback;
     sandbox.message({
@@ -35,6 +74,11 @@ places.detail = function(widget, callback, reference) {
     });
 };
 
+/**
+ * Recieves message data and places a callback to distribute that data. 
+ * @param {event} e - The message event
+ * @returns {undefined}
+ */
 places.messageHandler = function(e) {
     if (e.data.script === 'places') {
         if (places.callbacks[e.data.widget] !== undefined) {
@@ -44,44 +88,87 @@ places.messageHandler = function(e) {
         }
     }
 };
+
+/* Initializes the places object */
 $(document).ready(function() {
     window.addEventListener('message', places.messageHandler);
-    
-    /*console.log('starting update');
-    var latlng = {
-        'lat': 32.77,
-        'lng': -96.79
-    };
-    var us = places.getNearbySearch('mywidget', latlng, [
-        'airport'
-    ]);
-    us.onfinish = function() {
-        $('#test').append(us.getContentDiv(0));
-        $('#test').append(us.getDetailDiv(0));
-        console.log('update finished');
-        console.log('results: ' + us.results.length);
-        var i = us.getContentDivs(10, 3);
-    };*/
 });
 
-
-places.PlaceResults = function(widget, data, location) {
+/**
+ * An object that holds the results recieved from the PlacesAPI 
+ * @param {widget} widget - The widget object that is calling
+ *      the PlacesAPI.
+ * @param {object} data - Data from the message event for the PlacesAPI call.
+ * @param {location} location - The location object that defines the
+ *      location for the PlacesAPI to reference.
+ * @returns {PlaceResults}
+ */
+places.PlaceResults = function(widget, data, location)
+{
+    //internal object namespace
     var self = this;
     
-    this.triggerDiv = $('<div />')
+    /**
+     * The PlacesResults' parent widget object
+     * @type widget
+     */
     this.widget = widget;
+    
+    /**
+     * The results returned by the places API
+     * @type array
+     */
     this.results = [];
+    
+    /**
+     * The widget and view divs created from the results
+     * @type array
+     */
     this.resultsDivs = [];
+    
+    /**
+     * ???
+     * @type object
+     */
     this.resultsMap = {};
+    
+    /**
+     * ???
+     * @type object
+     */
     this.detailMap = {};
+    
+    /**
+     * The location these results were returned for
+     * @type live.location
+     */
     this.location = location;
     
+    /**
+     * Determines whether the results call has been completed.
+     * @type boolean
+     */
     this.finished = false;
+    
+    /**
+     * A function to call once the results call has been completed.
+     * @type function()
+     */
     this.onfinish = function() {};
     
+    /**
+     * The number of photos loaded for the results
+     * @type number
+     */
     this.photosLoaded = 0;
     
-    this.addResults = function(data) {
+    /**
+     * Uses the data object to parse the results returned.
+     * @param {object} data - Data from the message event for the PlacesAPI call.
+     * @returns {undefined}
+     */
+    this.addResults = function(data)
+    {
         if (!data) {
             return;
         }
@@ -92,17 +179,34 @@ places.PlaceResults = function(widget, data, location) {
                 self.resultsMap[data.results[i].id] = data.results[i];
             }
             
-            if (data.hasNextPage) {
+            var getNextPage = false;
+            
+//            This code can be used to get more pages of results. Commented out to save on API calls and loading.
+//            if (data.hasNextPage) 
+//            {
+//                getNextPage = true;
+//            }
+            
+            if (getNextPage) 
+            {
                 fetchPage(data.pageKey);
             }
-            else {
+            else 
+            {
                 self.populateContentDivs();
                 self.finished = true;
                 self.onfinish();
             }
         }
     };
-    this.addDetail = function(data) {
+    
+    /**
+     * Uses the data object to parse the business details returned.
+     * @param {object} data - Data from the message event for the PlacesAPI call.
+     * @returns {undefined}
+     */
+    this.addDetail = function(data)
+    {
         if (!data) {
             return;
         }
@@ -111,18 +215,25 @@ places.PlaceResults = function(widget, data, location) {
             self.detailMap[data.result.id] = data.result;            
         }
     };
-    var fetchPage = function(pageKey) {
+    
+    /**
+     * Gets a places results page from a pageKey
+     * @param {number} pageKey - A key to determine the page of results 
+     *      that should be returned.
+     * @returns {undefined}
+     */
+    var fetchPage = function(pageKey) 
+    {
         places.nearbySearch(self.widget, self.addResults, self.location, [], pageKey);
     };
-    var fetchDetail = function(reference, content) {
-        var detailCallback = 'DetailRequest' + Math.floor((Math.random() * 1000) + 1);
-        places.detail(detailCallback, function(data) {
-            self.addDetail(data);
-            self.resultsDivs[content.data('index')].detailDiv = places.updateContentDiv(content, data.result);
-        }, reference);
-    };
+    
+    //Add results from data upon object initialization
     this.addResults(data);
     
+    /**
+     * Adds div data to the resultsDivs array
+     * @returns {undefined}
+     */
     this.populateContentDivs = function()
     {
         for(var i = 0; i < self.results.length; i++)
@@ -134,15 +245,23 @@ places.PlaceResults = function(widget, data, location) {
             self.resultsDivs.push(resultDiv);
         }
     }
+    
+    /**
+     * Sets all the data, in the page elements, for a result
+     * @param {number} index - The index of the result to populate data from.
+     * @param {string} type - An indicator to determine whether the result is
+     *      populating a widget or a view
+     * @returns {jQuery element}
+     */
     this.populateContentDiv = function(index, type)
     {
         if(type == 'w')
         {
-            var div = places.createWidgetContentDiv(index).attr('data-index', index).addClass('highlight').on('photoLoaded', self.onPhotoLoaded).on('iconLoaded', self.onIconLoaded); 
+            var div = places.createWidgetContentDiv(index).attr('data-index', index).addClass('highlight');
         }
         else
         {
-            var div = places.createContentDiv(index).attr('data-index', index).addClass('highlight').on('photoLoaded', self.onPhotoLoaded).on('iconLoaded', self.onIconLoaded);
+            var div = places.createContentDiv(index).attr('data-index', index).addClass('highlight');
         }
         var data = self.results[index];
         if (data)
@@ -151,43 +270,14 @@ places.PlaceResults = function(widget, data, location) {
         }
         return div;
     };
-    this.onPhotoLoaded = function(e)
-    {
-        var photoLoaded = $(this).data('photoLoaded');
-        if(photoLoaded == false)
-        {
-            var resultDivIndex = $(this).data('index');
-            var newSource = $(this).find('.photo').attr('src');
-            var photoDiv = self.resultsDivs[resultDivIndex].viewDiv.find('.photo');
-            photoDiv.attr('src', newSource);
-            photoDiv = self.resultsDivs[resultDivIndex].widgetDiv.find('.photo');
-            photoDiv.attr('src', newSource);
-
-            $(this).data('photoLoaded', true);
-
-            self.photosLoaded++;
-            if(self.photosLoaded == 10)
-            {
-                self.triggerDiv.trigger('placesLoaded');
-            }
-        }
-    }
-    this.onIconLoaded = function(e)
-    {
-        var iconLoaded = $(this).data('iconLoaded');
-        if(iconLoaded == false)
-        {
-            var resultDivIndex = $(this).data('index');
-            var newSource = $(this).find('.icon').attr('src');
-            var iconDiv = self.resultsDivs[resultDivIndex].viewDiv.find('.icon');
-            iconDiv.attr('src', newSource);
-            iconDiv = self.resultsDivs[resultDivIndex].widgetDiv.find('.icon');
-            iconDiv.attr('src', newSource);
-
-            $(this).data('iconLoaded', true);
-        }
-    }
     
+    /**
+     * Gets a result div from the resultsDivs array
+     * @param {number} index - The index of the resultDiv to return.
+     * @param {string} type - An indicator to determine whether the result is
+     *      populating a widget or a view
+     * @returns {jQuery element}
+     */
     this.getContentDiv = function(index, type)
     {
         var resultDiv = self.resultsDivs[index];
@@ -214,7 +304,13 @@ places.PlaceResults = function(widget, data, location) {
     };
 };
 
-places.createContentDiv = function(index) {
+/**
+ * Creates an element containing the data from a result to function as a view element.
+ * @param {number} index - The index of the result to populate data from.
+ * @returns {jQuery element}
+ */
+places.createContentDiv = function(index)
+{
     var div = $('<div />').addClass('content').data('index', index).data('photoLoaded', false)
             .append($('<div/>').addClass('photo-box')
                 .append($('<div/>').addClass('title')
@@ -246,7 +342,12 @@ places.createContentDiv = function(index) {
     return div;
 };
 
-places.createWidgetContentDiv = function() {
+/**
+ * Creates an element containing the data from a result to function as a widget element.
+ * @returns {jQuery element}
+ */
+places.createWidgetContentDiv = function()
+{
     var div = $('<div/>').addClass('content')
             .append($('<div/>').addClass('name'))
             .append($('<div />').addClass('data')
@@ -259,7 +360,15 @@ places.createWidgetContentDiv = function() {
     return div;
 };
 
-places.updateContentDiv = function(content, data) {
+/**
+ * Sets all the data, in an element, for a result.
+ * @param {jQuery element} content - The element that will have its data updated.
+ * @param {object} data - The data object from a PlacesAPI call that contains the
+ *      data to update the content element with.
+ * @returns {jQuery element}
+ */
+places.updateContentDiv = function(content, data)
+{
     if (data !== undefined) 
     {
         var attributions = content.find('.attributions');
@@ -325,6 +434,11 @@ places.updateContentDiv = function(content, data) {
     return content;
 };
 
+/**
+ * Opens the map widget and sets a map marker for a result's address.
+ * @param {jQuery element} address - TA result's address element.
+ * @returns {undefined}
+ */
 places.mapMarkerHandler = function(address) {
     if (maps) {
         var address = address.html();

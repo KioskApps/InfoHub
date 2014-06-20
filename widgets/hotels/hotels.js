@@ -19,6 +19,7 @@ hotels.setLocation = function(location) {
     
     results.onfinish = function() {
         hotels.startHighlightUpdates(results);
+        hotels.w.trigger('placesLoaded');
     };
 };
 
@@ -38,7 +39,6 @@ hotels.startHighlightUpdates = function(results) {
     hotels.stopHighlightUpdates();
     
     var update = new hotels.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){hotels.w.trigger('placesLoaded');});
     update.start();
     hotels.currentUpdateService = update;
 };

@@ -9,11 +9,20 @@ maps.layersIndex = 0;
 maps.layersUpdateTime = 10000;
 maps.layersUpdateInterval;
 
-
+/**
+ * Initializes the maps widget
+ * @returns {undefined}
+ */
 maps.initialize = function() {
     $('<iframe/>').attr('src', 'widgets/maps/sandbox.html').appendTo(maps.wv.find('.frame'));
 };
 
+/**
+ * Resets the widget to display data based on a new location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
 maps.setLocation = function(location) {
     maps.v.find('iframe').each(function() {
         var win = this.contentWindow;
@@ -21,9 +30,12 @@ maps.setLocation = function(location) {
             maps.setViewLocation(location);
         }
     });
-    maps.setWidgetLocation(location);
 };
 
+/**
+ * Performs intialization operations when the view is opened.
+ * @returns {undefined}
+ */
 maps.viewStart = function() {
     maps.setViewLocation(live.location);
     maps.layersIndex = 0;
@@ -47,21 +59,27 @@ maps.viewStart = function() {
     maps.w.trigger('markerReady');
 };
 
+/**
+ * Sets the view to a loading state while the map refreshes.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
 maps.setViewLocation = function(location) {
     maps.showViewLoading();
     maps.setMapLocation(maps.v, location, maps.hideViewLoading);
 };
-maps.setWidgetLocation = function(location) {
-    maps.showWidgetLoading();
-    var url = [];
-    url.push('http://maps.googleapis.com/maps/api/staticmap?zoom=13&size=1000x1000');
-    url.push('&center=');
-    url.push(location.city);
-    live.getExternalImage(url.join(''), function(src) {
-        maps.w.find('.static').css('background-image', 'url("' + src + '")');
-        maps.hideWidgetLoading();
-    });
-};
+
+/**
+ * Sends a message to the MapAPI sandbox to set the location.
+ * @param {jQuery element} selector - The element that holds the iframe
+ * Maps element to update.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @param {function()} callback - callback function to 
+ *      execute when message has been sent.
+ * @returns {undefined}
+ */
 maps.setMapLocation = function(selector, location, callback) {
     setTimeout(function() {
         selector.find('iframe').each(function() {
@@ -83,6 +101,14 @@ maps.setMapLocation = function(selector, location, callback) {
     }, 100);
 };
 
+/**
+ * Sends a message to the MapAPI sandbox to set the location.
+ * @param {jQuery element} selector - The location object that defines the
+ *      location for the widget to reference.
+ * @param {string} layer - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
 maps.setLayer = function(selector, layer) {
     maps.postMessage(selector, {
         'widget': 'maps',

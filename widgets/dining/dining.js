@@ -23,6 +23,7 @@ dining.setLocation = function(location) {
     
     results.onfinish = function() {
         dining.startHighlightUpdates(results);
+        dining.w.trigger('placesLoaded');
     };
 };
 
@@ -42,7 +43,6 @@ dining.startHighlightUpdates = function(results) {
     dining.stopHighlightUpdates();
     
     var update = new dining.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){dining.w.trigger('placesLoaded');});
     update.start();
     dining.currentUpdateService = update;
 };

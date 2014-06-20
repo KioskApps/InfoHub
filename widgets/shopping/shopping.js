@@ -34,6 +34,7 @@ shopping.setLocation = function(location) {
     
     results.onfinish = function() {
         shopping.startHighlightUpdates(results);
+        shopping.w.trigger('placesLoaded');
     };
 };
 
@@ -53,7 +54,6 @@ shopping.startHighlightUpdates = function(results) {
     shopping.stopHighlightUpdates();
     
     var update = new shopping.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){shopping.w.trigger('placesLoaded');});
     update.start();
     shopping.currentUpdateService = update;
 };

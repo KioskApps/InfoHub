@@ -1,32 +1,118 @@
-function Widget(name, html, appendElement, type) {
-    
+function Widget(name, html, appendElement, type)
+{
+    //internal object namespace
     var self = this;
     
+    //Sanitizing parameters
     var n = typeof name === 'string' ? name : '';
     var h = typeof html === 'string' ? html : '';
     var ae = appendElement instanceof jQuery ? appendElement : $('#widgets');
     var t = typeof type === 'string' ? type : live.WidgetType.STANDARD;
     
+    /**
+     * The name of the widget
+     * @type string
+     */
     this.name = n;
+    
+    /**
+     * The widget's html body
+     * @type string
+     */
     this.html = h;
+    
+    /**
+     * a jQuery reference to the widget body
+     * @type jQuery element
+     */
     this.jhtml = $(h);
+    
+    /**
+     * The element where the widget will be appended to.
+     * @type jQuery element
+     */
     this.appendLocation = ae;
+    
+    /**
+     * The type of widget.
+     * @type live.WidgetType
+     */
     this.type = t;
     
+    /**
+     * A reference to the widget's widget figure
+     * @type jQuery element
+     */
     this.widget = this.jhtml.filter('figure.widget');
+    
+    /**
+     * A simplified reference to the widget's widget figure
+     * @type jQuery element
+     */
     this.w = this.widget;
+    
+    /**
+     * A reference to the widget's widget main view
+     * @type jQuery element
+     */
     this.view = this.jhtml.filter('main.view');
+    
+    /**
+     * A simplified reference to the widget's main view
+     * @type jQuery element
+     */
     this.v = this.view;
+    
+    /**
+     * A collective reference to the widget's widget figure and main view
+     * @type jQuery element collection
+     */
     this.widgetView = this.widget.add(this.view);
+    
+    /**
+     * A simplified collective reference to the widget's widget figure and main view
+     * @type jQuery element collection
+     */
     this.wv = this.widgetView;
     
+    /**
+     * A reference to the widget's specific type namespace
+     * @type object
+     */
     this.js = window[self.name];
+    
+    /**
+     * A reference to the widget object namespace
+     * @type object
+     */
     this.js.widget = this;
+    
+    /**
+     * A simplified reference to the widget's widget figure
+     * @type jQuery element
+     */
     this.js.w = this.widget;
+    
+    /**
+     * A simplified reference to the widget's main view
+     * @type jQuery element
+     */
     this.js.v = this.view;
+    
+    /**
+     * A simplified collective reference to the widget's widget figure and main view
+     * @type jQuery element collection
+     */
     this.js.wv = this.widgetView;
     
-    this.initialize = function() {
+    
+    
+    /**
+     * Initializes the widget
+     * @returns {undefined}
+     */
+    this.initialize = function()
+    {
         initializeFunction('initialize');
         initializeFunction('setLocation');
         initializeFunction('viewStart');
@@ -45,6 +131,15 @@ function Widget(name, html, appendElement, type) {
         
         return self;
     };
+    
+    /**
+     * Toggles the widget's view between open and closed.
+     * @param {boolean} dontHide - a boolean to determine whether or not 
+     *      to hide the view panel when toggled.
+     * @param {boolean} supressWidgetAnimation - a boolean to determine
+     *      whether or not to surpress the supplemental widget animations.
+     * @returns {undefined}
+     */
     this.toggleView = function(dontHide, surpressWidgetAnimation)
     {
         var toAdd = live.validateAddView(self.view, self.type);
@@ -58,7 +153,12 @@ function Widget(name, html, appendElement, type) {
             self.removeViewAnimations(surpressWidgetAnimation);
         }
     };
-    this.startView = function(added)
+    
+    /**
+     * Performs intialization operations when the view is opened.
+     * @returns {undefined}
+     */
+    this.startView = function()
     { 
         live.addView(self.view, self.type);
         self.js.viewStart();
@@ -72,12 +172,21 @@ function Widget(name, html, appendElement, type) {
             setTimeout(function(){self.js.setLocation(live.location);}, 300);
         }
     }
+    
+    /**
+     * Performs closedown operations when the view is closed.
+     * @returns {undefined}
+     */
     this.endView = function()
     {
         live.addView(self.view, self.type);        
         self.js.viewEnd();
     }
     
+    /**
+     * Animates widgets to facilitate a view being added.
+     * @returns {undefined}
+     */
     this.addViewAnimations = function()
     {
         self.widget.velocity({scale: .95}, {duration:100}).velocity({scale: 1}, {easing: [250, 10], duation:100});
@@ -108,6 +217,13 @@ function Widget(name, html, appendElement, type) {
             self.widget.trigger('addViewAnimationsComplete');
         }
     }
+    
+    /**
+     * Animates widgets to facilitate a view being removed.
+     * @param {boolean} supressWidgetAnimation - a boolean to determine
+     *      whether or not to surpress the supplemental widget animations.
+     * @returns {undefined}
+     */
     this.removeViewAnimations = function(surpressWidgetAnimation)
     {
         if(surpressWidgetAnimation !== true)
@@ -135,6 +251,10 @@ function Widget(name, html, appendElement, type) {
         }
     }
     
+    /**
+     * Animates supplemental widgets to their initial state.
+     * @returns {undefined}
+     */
     this.resetSupplementalWidgets = function()
     {
         var secondaryWidgets = $('.static-widgets .main .widgets .supplemental-widgets .widget');
@@ -150,7 +270,13 @@ function Widget(name, html, appendElement, type) {
         secondaryWidgets.removeClass('small');
     }
     
-    var initializeFunction = function(name) {
+    /**
+     * Creates an expected function in case it is not created manually.
+     * @param {string} name - the name of the function to create.
+     * @returns {undefined}
+     */
+    var initializeFunction = function(name) 
+    {
         if(name == 'toggleView')
         {
             self.js[name] = self.toggleView;
@@ -160,34 +286,106 @@ function Widget(name, html, appendElement, type) {
         }
     };
     
-    this.showViewLoading = function() {
+    /**
+     * Shows the loading overlay for the widget's view.
+     * @returns {undefined}
+     */
+    this.showViewLoading = function()
+    {
         self.showLoading(self.view);
     };
-    this.hideViewLoading = function() {
+    
+    /**
+     * Hides the loading overlay for the widget's view.
+     * @returns {undefined}
+     */
+    this.hideViewLoading = function()
+    {
         self.hideLoading(self.view);
     };
-    this.js.showViewLoading = this.showViewLoading;
-    this.js.hideViewLoading = this.hideViewLoading;
-    this.showWidgetLoading = function() {
+    
+    /**
+     * Shows the loading overlay for the widget's widget.
+     * @returns {undefined}
+     */
+    this.showWidgetLoading = function()
+    {
         self.showLoading(self.widget);
     };
-    this.hideWidgetLoading = function() {
+    
+    /**
+     * Hides the loading overlay for the widget's view.
+     * @returns {undefined}
+     */
+    this.hideWidgetLoading = function()
+    {
         self.hideLoading(self.widget);
     };
-    this.js.showWidgetLoading = this.showWidgetLoading;
-    this.js.hideWidgetLoading = this.hideWidgetLoading;
-    this.showLoading = function(selector) {
-        if (selector === undefined) {
+    
+    /**
+     * Shows the loading overlay for an element.
+     * @param {jQuery element} selector - The view element that will have
+     *      have a loading overlay displayed.
+     * @returns {undefined}
+     */
+    this.showLoading = function(selector)
+    {
+        if (selector === undefined)
+        {
             selector = self.widgetView;
         }
         selector.find('.loading').show();
     };
-    this.hideLoading = function(selector) { 
-        if (selector === undefined) {
+    
+    /**
+     * Hides the loading overlay for an element.
+     * @param {jQuery element} selector - The view element that will have
+     *      have a loading overlay hidden.
+     * @returns {undefined}
+     */
+    this.hideLoading = function(selector)
+    { 
+        if (selector === undefined)
+        {
             selector = self.widgetView;
         }
         selector.find('.loading').hide();
     };
+    
+    /**
+     * A reference to the widget's showLoading function
+     * @type function(selector)
+     */
+    
     this.js.showLoading = this.showLoading;
+    
+    /**
+     * A reference to the widget's hideLoading function
+     * @type function(selector)
+     */
     this.js.hideLoading = this.hideLoading;
+    
+    /**
+     * A reference to the widget's showViewLoading function
+     * @type function()
+     */
+    this.js.showViewLoading = this.showViewLoading;
+    
+    /**
+     * A reference to the widget's hideViewLoading function
+     * @type function()
+     */
+    this.js.hideViewLoading = this.hideViewLoading;
+    
+    /**
+     * A reference to the widget's showWidgetLoading function
+     * @type function()
+     */
+    this.js.showWidgetLoading = this.showWidgetLoading;
+    
+    /**
+     * A reference to the widget's hideWidgetLoading function
+     * @type function()
+     */
+    this.js.hideWidgetLoading = this.hideWidgetLoading;
 }

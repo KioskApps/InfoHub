@@ -31,6 +31,7 @@ entertainment.setLocation = function(location) {
     
     results.onfinish = function() {
         entertainment.startHighlightUpdates(results);
+        entertainment.w.trigger('placesLoaded');
     };
 };
 
@@ -50,7 +51,6 @@ entertainment.startHighlightUpdates = function(results) {
     entertainment.stopHighlightUpdates();
     
     var update = new entertainment.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){entertainment.w.trigger('placesLoaded');});
     update.start();
     entertainment.currentUpdateService = update;
 };

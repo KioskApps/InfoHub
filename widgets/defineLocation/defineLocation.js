@@ -1,26 +1,28 @@
 //Location Namespace
 var defineLocation = {};
 
-//Global Variables
-defineLocation.VIEW_LOCATIONS = [
-    'San Francisco',
-    'Dallas',
-    'Los Angeles',
-    'Denver',
-    'Chicago',
-    'New York',
-    'London',
-    'Beijing'
-];
-
+/**
+ * Initializes the defineLocation widget
+ * @returns {undefined}
+ */
 defineLocation.initialize = function() {
     
 };
 
+/**
+ * Resets the widget to display data based on a new location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
 defineLocation.setLocation = function(location) {
      
 };
 
+/**
+ * Performs intialization operations when the view is opened.
+ * @returns {undefined}
+ */
 defineLocation.viewStart = function()
 {
     $('#location', defineLocation.v).unbind('keypress').keypress(function(e) {
@@ -41,18 +43,11 @@ defineLocation.viewStart = function()
         defineLocation.w.click();
     });
 };
+
+/**
+ * Performs closedown operations when the view is opened.
+ * @returns {undefined}
+ */
 defineLocation.viewEnd = function() {
     $('#location', defineLocation.v).val('');
-};
-defineLocation.widgetStart = function() {
-     
-};
-defineLocation.widgetEnd = function() {
-    
-};
-defineLocation.iconStart = function() {
-    
-};
-defineLocation.iconEnd = function() {
-    
 };

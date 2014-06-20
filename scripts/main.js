@@ -1,68 +1,69 @@
 //LiveStream Namespace
 var live = {};
+
+/**
+ * An array of the widgets being used
+ * @type Array
+ */
 live.widgets = [];
+/**
+ * Total number of widgets being used.
+ * @type Number
+ */
 live.widgetCount = 0;
+/**
+ * Total number of widgets using the Places API
+ * @type Number
+ */
 live.placesWidgetsCount = 0;
+/**
+ * The amount of widgets using the Places API to be finished with loading their content from the web.
+ * @type Number
+ */
 live.placesLoadedCount = 0;
-live.location = {
+/**
+ * The current location that all widgets will use to gather data for.
+ * @type Location
+ */
+live.location =
+{
     'city': 'Dallas'
 };
 
+/**
+ * A number used to modify how fast the parallax effect scrolls.
+ * @type Number
+ */
 live.PARALLAX_SPEED = 20;
+/**
+ * An enumerator used to determine where a widget's view will be opened.
+ * @type Enum
+ */
 live.WidgetType = {'STANDARD': 'standard', 'SUPPLEMENTAL': 'supplemental'}
 
 /* Initialization */
-$(document).ready(function() {
+$(document).ready(function()
+{
     live.initialize();
 });
-live.initialize = function() {
+
+/**
+ * Initialize the app
+ * @returns {undefined}
+ */
+live.initialize = function()
+{
     live.initializeStillThere();
     sandbox.initialize();
     live.initializeParallax();
     live.initializeWidgets();
     live.initializeListeners();
 };
-live.initializeWidgets = function() {
-    live.initializeWidget('defineLocation', $('section.content .display .static-widgets .main .widgets .location'));
-    //live.initializeWidget('wiki', $('section.content .display .static-widgets .secondary .widgets'));
-    live.initializeWidget('maps', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
-    live.initializeWidget('timezone', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
-    live.initializeWidget('weather', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
-    //Disable places temporarily to save API calls
-    live.initializeWidget('dining');
-    live.initializeWidget('entertainment');
-    live.initializeWidget('shopping');
-    live.initializeWidget('travel');
-    live.initializeWidget('hotels');
-    live.initializeWidget('finance');
-};
-live.initializeWidget = function(widget, appendElement, type) {
-    live.widgetCount++;
-    $.get('widgets/' + widget + '/' + widget + '.html', function(data) {
-        var ae = appendElement instanceof jQuery ? appendElement : $('#widgets');
-        var w = new Widget(widget, data, ae, type).initialize();
-        live.widgets.push(w);
-        if (live.widgets.length === live.widgetCount) {
-            live.widgetsLoaded();
-        }
-    });
-};
-live.widgetsLoaded = function() {
-    loading.initialize();
-    live.updateLocation();
-};
-live.initializeListeners = function()
-{
-    $('#app-title').click(live.closeAll);
-    $('.help').click(function(){
-        stillthere.showTimeout();});
-};
-live.initializeParallax = function() {
-    $('#widgets-container').scroll(function() {
-        var y = -($('#widgets-container').scrollTop() / live.PARALLAX_SPEED);
-        $('main.fullscreen').css('background-position', '50% ' + y + 'px');
-    });
-};
+
+/**
+ * Initializes the stillhere library.
+ * @returns {undefined}
+ */
 live.initializeStillThere = function()
 {
     stillthere.timeoutStillThere = 120000; //2 minutes
@@ -83,17 +84,91 @@ live.initializeStillThere = function()
                                     '<div class="instructions"><div class="touch-icon-wrap touch-icon-effect"><div class="touch-icon"></div></div><div class="text">Touch to begin</div></div>',
                                 '</div>'];
         stillthere.overlay.find('.message').html(messageHTMLArray.join(''));
-        
+        live.closeAll();
     });
     stillthere.addEventListener(stillthere.Event.LOADED, function()
     {
         stillthere.showTimeout();
     });
-    
-    live.closeAll
-}
+};
 
-live.updateLocation = function() {
+/**
+ * Initializes all of the widgets
+ * @returns {undefined}
+ */
+live.initializeWidgets = function()
+{
+    live.initializeWidget('defineLocation', $('section.content .display .static-widgets .main .widgets .location'));
+    live.initializeWidget('maps', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
+    live.initializeWidget('timezone', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
+    live.initializeWidget('weather', $('section.content .supplemental-widgets'), live.WidgetType.SUPPLEMENTAL);
+    //Disable places temporarily to save API calls
+    live.initializeWidget('dining');
+    live.initializeWidget('entertainment');
+    live.initializeWidget('shopping');
+    live.initializeWidget('travel');
+    live.initializeWidget('hotels');
+    live.initializeWidget('finance');
+};
+
+/**
+ * Initializes a widget
+ * @returns {undefined}
+ */
+live.initializeWidget = function(widget, appendElement, type)
+{
+    live.widgetCount++;
+    $.get('widgets/' + widget + '/' + widget + '.html', function(data) {
+        var ae = appendElement instanceof jQuery ? appendElement : $('#widgets');
+        var w = new Widget(widget, data, ae, type).initialize();
+        live.widgets.push(w);
+        if (live.widgets.length === live.widgetCount) {
+            live.widgetsLoaded();
+        }
+    });
+};
+
+/**
+ * Initializes global and static listeners
+ * @returns {undefined}
+ */
+live.initializeListeners = function()
+{
+    $('#app-title').click(function(e){live.closeAll();});
+    $('.help').click(function(){chrome.runtime.reload();});
+};
+
+/**
+ * Initializes the parallax effect
+ * @returns {undefined}
+ */
+live.initializeParallax = function()
+{
+    $('#widgets-container').scroll(function() 
+    {
+        var y = -($('#widgets-container').scrollTop() / live.PARALLAX_SPEED);
+        $('main.fullscreen').css('background-position', '50% ' + y + 'px');
+    });
+};
+
+
+/* Widget Actions */
+/**
+ * Starts the widgets
+ * @returns {undefined}
+ */
+live.widgetsLoaded = function() 
+{
+    loading.initialize();
+    live.updateLocation();
+};
+
+/**
+ * Sets the global location variable
+ * @returns {undefined}
+ */
+live.updateLocation = function() 
+{
     var location = $('#location', defineLocation.v).val();
     live.hideWidgets(function()     
     {
@@ -110,6 +185,13 @@ live.updateLocation = function() {
     });
     
 };
+
+/**
+ * Hides all of the standard widgets 
+ * @param {function()} callback - callback function to 
+ *      execute when all standard widgets have been hidden.
+ * @returns {undefined}
+ */
 live.hideWidgets = function(callback)
 {
     var widgetCount = 0;
@@ -120,7 +202,7 @@ live.hideWidgets = function(callback)
     loadingDiv.velocity({opacity:1, translateY:'-150%'}, {duration:1000});
     $('#widgets .widget').each(function()
     {
-        $(this).velocity({opacity:0, translateZ:0, translateY: '100%'}, {'easing':[ 250, 25 ], 'delay': (widgetCount * 150)});
+        $(this).velocity({opacity:0, translateZ:0, translateY: '300%'}, {'easing':[ 250, 25 ], 'delay': (widgetCount * 150)});
         widgetCount++;
     }).promise().done(function()
     {
@@ -131,6 +213,12 @@ live.hideWidgets = function(callback)
         }
     });
 }
+
+/**
+ * Updates the global placesLoadedCount variable and
+ * shows the widgets when all widgets have been loaded.
+ * @returns {undefined}
+ */
 live.updatePlacesLoaded = function()
 {
     live.placesLoadedCount++;
@@ -142,6 +230,13 @@ live.updatePlacesLoaded = function()
         }, 1500);
     }
 }
+
+/**
+ * Shows all of the standard widgets 
+ * @param {function()} callback - callback function to 
+ *      execute when all standard widgets have been displayed.
+ * @returns {undefined}
+ */
 live.showWidgets = function(callback)
 {
     $('#widgets-loading').velocity({opacity:0, translateY:'50%'}, {duration:1000, complete:function(){$(this).remove();}});
@@ -161,6 +256,10 @@ live.showWidgets = function(callback)
     }); 
 }
 
+/**
+ * Changes the size of the current city text.
+ * @returns {undefined}
+ */
 live.setCityDisplay = function()
 {
     var fontSize = 60;
@@ -178,7 +277,15 @@ live.setCityDisplay = function()
 }
 
 /* View Manipulation */
-live.validateAddView = function(selector, widgetType) {    
+/**
+ * Checks if a widget is already in a view
+ * @param {jQuery element} selector - The view element that will be added to 
+ *      the view panel.
+ * @param {live.WidgetType} widgetType - The type of widget that is being checked.
+ * @returns {Boolean}
+ */
+live.validateAddView = function(selector, widgetType) 
+{    
     var viewPanel = $('#view-panel');
     var supplementalViewPanel = $('#supplemental-view-panel');
     var viewPanelVisible = viewPanel.hasClass('visible');
@@ -215,6 +322,13 @@ live.validateAddView = function(selector, widgetType) {
     }
     return added;
 };
+/**
+ * Adds a view to a view panel and closes any currently open views in that panel.
+ * @param {jQuery element} selector - The view element that will be be added to 
+ *      the view panel.
+ * @param {live.WidgetType} widgetType - the type of widget that is being checked.
+ * @returns {Boolean}
+ */
 live.addView = function(selector, widgetType)
 {    
     var viewPanel = $('#view-panel');
@@ -289,6 +403,12 @@ live.addView = function(selector, widgetType)
     return added;
 };
 
+/**
+ * Shows the view panel 
+ * @param {function()} callback - callback function to 
+ *      execute when the view panel has finished animating.
+ * @returns {undefined}
+ */
 live.showViewPanel = function(callback)
 {
     var viewPanel = $('#view-panel');
@@ -303,6 +423,13 @@ live.showViewPanel = function(callback)
     viewPanel.addClass('visible');
     $('section.content>.display').addClass('shared');
 }
+
+/**
+ * Hides the view panel 
+ * @param {function()} callback - callback function to 
+ *      execute when the view panel has finished animating.
+ * @returns {undefined}
+ */
 live.hideViewPanel = function(callback)
 {
     var viewPanel = $('#view-panel');
@@ -318,6 +445,12 @@ live.hideViewPanel = function(callback)
     $('section.content>.display').removeClass('shared');
 }
 
+/**
+ * Shows the supplemental view panel 
+ * @param {function()} callback - callback function to 
+ *      execute when the supplemental view panel has finished animating.
+ * @returns {undefined}
+ */
 live.showSupplementalViewPanel = function(callback)
 {
     var viewPanel = $('#supplemental-view-panel');
@@ -332,6 +465,13 @@ live.showSupplementalViewPanel = function(callback)
     viewPanel.addClass('visible');
     $('#widgets-container').addClass('shared');
 }
+
+/**
+ * Hides the supplemental view panel 
+ * @param {function()} callback - callback function to 
+ *      execute when the supplemental view panel has finished animating.
+ * @returns {undefined}
+ */
 live.hideSupplementalViewPanel = function(callback)
 {
     var viewPanel = $('#supplemental-view-panel');
@@ -347,10 +487,26 @@ live.hideSupplementalViewPanel = function(callback)
     $('#widgets-container').removeClass('shared');
 }
 
+/**
+ * Adds a view to a view panel.
+ * @param {jQuery element} viewPanel - The view panel that the view will
+ *      be added to.
+ * @param {jQuery element} selector - The view element that will be be added to 
+ *      the view panel.
+ * @returns {undefined}
+ */
 live.openView = function(viewPanel, selector)
 {
     viewPanel.append(selector);
 }
+/**
+ * Closes a view.
+ * @param {jQuery element} viewPanel - The view panel that holds a view that
+ *      will be closed.
+ * @param {function()} callback - callback function to execute when the
+ *      view has been closed.
+ * @returns {undefined}
+ */
 live.closeView = function(viewPanel, callback)
 {
     viewPanel.empty();
@@ -360,7 +516,11 @@ live.closeView = function(viewPanel, callback)
     }
 }
 
-live.closeAll = function(event)
+/**
+ * Closes both view panels and the views inside them.
+ * @returns {undefined}
+ */
+live.closeAll = function()
 {
     var viewPanel = $('#view-panel');
     var view = viewPanel.find('.view');
@@ -400,12 +560,23 @@ live.closeAll = function(event)
     });
 }
 
-live.getExternalImage = function(url, callback) {
+
+
+
+/*Helper Functions*/
+/**
+ * Loads an image from a url.
+ * @param {string} url - The url of the image to retrieve.
+ * @param {function()} callback - callback function to execute
+ *      when the image has been loaded.
+ * @returns {undefined}
+ */
+live.getExternalImage = function(url, callback)
+{
     try
     {
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
-        xhr.onreadystatechange = function(event){live.XMLHTTPRequestReadyStateChanged(xhr, callback)};
         xhr.onload = function(event){ callback(window.URL.createObjectURL(xhr.response));};
         xhr.open('GET', url, true);
         xhr.send(null);
@@ -415,33 +586,13 @@ live.getExternalImage = function(url, callback) {
         console.log(exception.message);
     }
 };
-live.XMLHTTPRequestReadyStateChanged = function(xhr, callback)
-{
-    if (xhr.readyState === 4)
-    {
-       
-//        if(xhr.status === 200)
-//        {
-//            callback(window.URL.createObjectURL(xhr.response));
-//        }
-//        else
-//        {
-//            callback('images/noImage.jpg');
-//            //console.log('Error Status: ' + xhr.status);
-//        }
-    } 
-}
 
-live.externalImageError = function(event)
-{
-    console.log('error getting image');
-}
-live.externalImageBadStatus = function(event)
-{
-    console.log('error getting image');
-}
-
-/*Helper Functions*/
+/**
+ * Gets the name of a widget from that widget's view or widget element.
+ * @param {jQuery element} element - The element to be used to extract
+ *      the widget's name.
+ * @returns {string}
+ */
 live.getWidgetName = function(element)
 {
     var classes = element.attr('class').split(/\s+/);
@@ -453,6 +604,12 @@ live.getWidgetName = function(element)
         }
     }
 }
+
+/**
+ * Gets a widget from a name.
+ * @param {string} name - The name of the widget.
+ * @returns {jQuery element}
+ */
 live.getWidgetFromName = function(name)
 {
     var dashIndex = name.indexOf('-');

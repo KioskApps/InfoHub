@@ -24,6 +24,7 @@ travel.setLocation = function(location) {
     
     results.onfinish = function() {
         travel.startHighlightUpdates(results);
+        travel.w.trigger('placesLoaded');
     };
 };
 
@@ -43,7 +44,6 @@ travel.startHighlightUpdates = function(results) {
     travel.stopHighlightUpdates();
     
     var update = new travel.UpdateService(results);
-    update.results.triggerDiv.on('placesLoaded', function(){travel.w.trigger('placesLoaded');});
     update.start();
     travel.currentUpdateService = update;
 };
