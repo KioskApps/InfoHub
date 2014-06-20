@@ -1,14 +1,35 @@
-//Food Namespace
+//Dining Namespace
 var dining = {};
+
+/**
+ * The location that the widget is currently set to.
+ * @type live.location
+ */
 dining.currentLocation;
 
+/**
+ * Time between rotating the widget slider.
+ * @type number
+ */
 dining.UPDATE_INTERVAL = 10000;
 
-dining.initialize = function() {
+/**
+ * Initializes the dining widget
+ * @returns {undefined}
+ */
+dining.initialize = function() 
+{
     dining.v.find('.detail').append(places.createContentDiv());
 };
 
-dining.setLocation = function(location) {
+/**
+ * Resets the widget to display data based on a new location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
+dining.setLocation = function(location) 
+{
     var types = [
         'bakery', 
         'bar', 
@@ -27,10 +48,19 @@ dining.setLocation = function(location) {
     };
 };
 
+/**
+ * Performs intialization operations when the view is opened.
+ * @returns {undefined}
+ */
 dining.viewStart = function()
 {
     dining.w.unbind('click');
 };
+
+/**
+ * Performs closedown operations when the view is opened.
+ * @returns {undefined}
+ */
 dining.viewEnd = function()
 {
     dining.w.unbind('click').click(function(e)
@@ -39,25 +69,63 @@ dining.viewEnd = function()
     });
 };
 
-dining.startHighlightUpdates = function(results) {
+/**
+ * Creates the update service and starts the widget highlight slider.
+ * @param {PlaceResults} results - The placeResults from the PlacesAPI call.
+ * @returns {undefined}
+ */
+dining.startHighlightUpdates = function(results)
+{
     dining.stopHighlightUpdates();
     
     var update = new dining.UpdateService(results);
     update.start();
     dining.currentUpdateService = update;
 };
-dining.stopHighlightUpdates = function() {
+
+/**
+ * Stops the widget highlight slider.
+ * @returns {undefined}
+ */
+dining.stopHighlightUpdates = function()
+{
     if (dining.currentUpdateService) {
         dining.currentUpdateService.stop();
     }
 };
-dining.UpdateService = function(results) {
+
+/**
+ * An object that updates the widget with results from the placesResults 
+ * @param {PlaceResults} results - The placeResults from the PlacesAPI call.
+ * @returns {UpdateService}
+ */
+dining.UpdateService = function(results)
+{
+    //internal object namespace
     var self = this;
     
+    /**
+     * The placeResults from the PlacesAPI call.
+     * @type PlaceResults
+     */
     this.results = results;
+    
+    /**
+     * The index of the result that is currently displayed on the widget.
+     * @type number
+     */
     this.index = 0;
+    
+    /**
+     * Determines whether the widget updates.
+     * @type boolean
+     */
     this.running = true;
     
+    /**
+     * Adds the places to the view and starts the widget updates.
+     * @returns {undefined}
+     */
     this.start = function()
     {
         dining.v.find('.places-list').empty();
@@ -77,6 +145,11 @@ dining.UpdateService = function(results) {
         }
         self.update();
     };
+    
+    /**
+     * Updates the widget.
+     * @returns {undefined}
+     */
     this.update = function()
     {
         if(self.running)
@@ -91,11 +164,22 @@ dining.UpdateService = function(results) {
             setTimeout(self.update, dining.UPDATE_INTERVAL);
         }
     }
+    
+    /**
+     * Stops the widget slider.
+     * @returns {undefined}
+     */
     this.stop = function()
     {
         self.running = false;
     };
     
+    /**
+     * Adds the places result element to the detail element.
+     * @param {event} e - The click event data.
+     * @param {jQuery element} view - The widget's view element from the resultsDiv object.
+     * @returns {undefined}
+     */
     this.highlightClickHandler = function(e, view)
     {
         if(view == undefined)
@@ -109,6 +193,11 @@ dining.UpdateService = function(results) {
         }
     };
     
+    /**
+     * Updates the widget's slider.
+     * @param {jQuery element} widget - The widget's widget element from the resultsDiv object.
+     * @returns {undefined}
+     */
     this.updateWidget = function(widget)
     {
         var div = self.results.getContentDiv(self.index, 'w');
@@ -122,6 +211,11 @@ dining.UpdateService = function(results) {
         slider.navigateTo($('.slider', dining.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
     }
     
+    /**
+     * Animates the data that appears on the widget.
+     * @param {jQuery element} widget - The widget's widget element.
+     * @returns {undefined}
+     */
     this.animateWidgetData = function(widget)
     {        
         var price = widget.find('.price');

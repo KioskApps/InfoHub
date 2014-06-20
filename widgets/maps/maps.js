@@ -2,11 +2,34 @@
 var maps = {};
 
 //Global Variables
+/**
+ * API key for accessing the Google Maps API.
+ * @type string
+ */
 maps.API_KEY = 'AIzaSyCEc-ILEMoraGX8sL0pMdgtfqSq2kOkleo';
 
+/**
+ * Types of map layers to be used by the map.
+ * @type array
+ */
 maps.layersArray = ['none', 'traffic', 'transit'];
+
+/**
+ * The index of the current layer in the layersArray.
+ * @type number
+ */
 maps.layersIndex = 0;
+
+/**
+ * The time between automatically switching to the next map layer.
+ * @type number
+ */
 maps.layersUpdateTime = 10000;
+
+/**
+ * The interval id for switching the map layers.
+ * @type number
+ */
 maps.layersUpdateInterval;
 
 /**
@@ -71,9 +94,9 @@ maps.setViewLocation = function(location) {
 };
 
 /**
- * Sends a message to the MapAPI sandbox to set the location.
+ * Sends a message to the MapsAPI sandbox to set the location.
  * @param {jQuery element} selector - The element that holds the iframe
- * Maps element to update.
+ *      Maps element to update.
  * @param {location} location - The location object that defines the
  *      location for the widget to reference.
  * @param {function()} callback - callback function to 
@@ -102,9 +125,9 @@ maps.setMapLocation = function(selector, location, callback) {
 };
 
 /**
- * Sends a message to the MapAPI sandbox to set the location.
- * @param {jQuery element} selector - The location object that defines the
- *      location for the widget to reference.
+ * Sends a message to the MapsAPI sandbox to set the location.
+ * @param {jQuery element} selector - The element that holds the iframe
+ *      Maps element to update.
  * @param {string} layer - The location object that defines the
  *      location for the widget to reference.
  * @returns {undefined}
@@ -119,6 +142,10 @@ maps.setLayer = function(selector, layer) {
     maps.layersIndex = maps.layersArray.indexOf(layer);
 };
 
+/**
+ * Changes the currently selected map layer.
+ * @returns {undefined}
+ */
 maps.layersUpdate = function()
 {
     maps.setLayer(maps.v, maps.layersArray[maps.layersIndex]);
@@ -129,6 +156,12 @@ maps.layersUpdate = function()
     }    
 }
 
+/**
+ * Adds a marker to the map.
+ * @param {location} location - The location object that defines the
+ *      location for the map marker.
+ * @returns {undefined}
+ */
 maps.setMarker = function(location) {
     maps.postMessage(maps.v, {
         'widget': 'maps',
@@ -136,6 +169,13 @@ maps.setMarker = function(location) {
     });
 };
 
+/**
+ * Posts a message to the MapsAPI sandbox.
+ * @param {jQuery element} selector - The element that holds the iframe
+ *      Maps element to update.
+ * @param {string} message - The message to send to the MapsAPI
+ * @returns {undefined}
+ */
 maps.postMessage = function(selector, message) {
     selector.find('iframe').each(function() {
         var win = this.contentWindow;

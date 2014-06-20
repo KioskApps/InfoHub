@@ -1,14 +1,35 @@
-//Food Namespace
+//Hotels Namespace
 var hotels = {};
+
+/**
+ * The location that the widget is currently set to.
+ * @type live.location
+ */
 hotels.currentLocation;
 
+/**
+ * Time between rotating the widget slider.
+ * @type number
+ */
 hotels.UPDATE_INTERVAL = 10000;
 
-hotels.initialize = function() {
+/**
+ * Initializes the hotels widget
+ * @returns {undefined}
+ */
+hotels.initialize = function() 
+{
     hotels.v.find('.detail').append(places.createContentDiv());
 };
 
-hotels.setLocation = function(location) {
+/**
+ * Resets the widget to display data based on a new location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
+hotels.setLocation = function(location) 
+{
     var types = [
         'campground',
         'lodging',
@@ -23,10 +44,19 @@ hotels.setLocation = function(location) {
     };
 };
 
+/**
+ * Performs intialization operations when the view is opened.
+ * @returns {undefined}
+ */
 hotels.viewStart = function()
 {
     hotels.w.unbind('click');
 };
+
+/**
+ * Performs closedown operations when the view is opened.
+ * @returns {undefined}
+ */
 hotels.viewEnd = function()
 {
     hotels.w.unbind('click').click(function(e)
@@ -35,25 +65,63 @@ hotels.viewEnd = function()
     });
 };
 
-hotels.startHighlightUpdates = function(results) {
+/**
+ * Creates the update service and starts the widget highlight slider.
+ * @param {PlaceResults} results - The placeResults from the PlacesAPI call.
+ * @returns {undefined}
+ */
+hotels.startHighlightUpdates = function(results) 
+{
     hotels.stopHighlightUpdates();
     
     var update = new hotels.UpdateService(results);
     update.start();
     hotels.currentUpdateService = update;
 };
-hotels.stopHighlightUpdates = function() {
+
+/**
+ * Stops the widget highlight slider.
+ * @returns {undefined}
+ */
+hotels.stopHighlightUpdates = function() 
+{
     if (hotels.currentUpdateService) {
         hotels.currentUpdateService.stop();
     }
 };
-hotels.UpdateService = function(results) {
+
+/**
+ * An object that updates the widget with results from the placesResults 
+ * @param {PlaceResults} results - The placeResults from the PlacesAPI call.
+ * @returns {UpdateService}
+ */
+hotels.UpdateService = function(results) 
+{
+    //internal object namespace
     var self = this;
     
+    /**
+     * The placeResults from the PlacesAPI call.
+     * @type PlaceResults
+     */
     this.results = results;
+    
+    /**
+     * The index of the result that is currently displayed on the widget.
+     * @type number
+     */
     this.index = 0;
+    
+    /**
+     * Determines whether the widget updates.
+     * @type boolean
+     */
     this.running = true;
     
+    /**
+     * Adds the places to the view and starts the widget updates.
+     * @returns {undefined}
+     */
     this.start = function()
     {
         hotels.v.find('.places-list').empty();
@@ -73,6 +141,11 @@ hotels.UpdateService = function(results) {
         }
         self.update();
     };
+    
+    /**
+     * Updates the widget.
+     * @returns {undefined}
+     */
     this.update = function()
     {
         if(self.running)
@@ -87,11 +160,22 @@ hotels.UpdateService = function(results) {
             setTimeout(self.update, hotels.UPDATE_INTERVAL);
         }
     }
+    
+    /**
+     * Stops the widget slider.
+     * @returns {undefined}
+     */
     this.stop = function()
     {
         self.running = false;
     };
     
+    /**
+     * Adds the places result element to the detail element.
+     * @param {event} e - The click event data.
+     * @param {jQuery element} view - The widget's view element from the resultsDiv object.
+     * @returns {undefined}
+     */
     this.highlightClickHandler = function(e, view)
     {
         if(view == undefined)
@@ -105,6 +189,11 @@ hotels.UpdateService = function(results) {
         }
     };
     
+    /**
+     * Updates the widget's slider.
+     * @param {jQuery element} widget - The widget's widget element from the resultsDiv object.
+     * @returns {undefined}
+     */
     this.updateWidget = function(widget)
     {
         var div = self.results.getContentDiv(self.index, 'w');
@@ -118,6 +207,11 @@ hotels.UpdateService = function(results) {
         slider.navigateTo($('.slider', hotels.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
     }
     
+    /**
+     * Animates the data that appears on the widget.
+     * @param {jQuery element} widget - The widget's widget element.
+     * @returns {undefined}
+     */
     this.animateWidgetData = function(widget)
     {        
         var price = widget.find('.price');

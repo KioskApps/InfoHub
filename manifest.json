@@ -6,7 +6,7 @@
     },
     "manifest_version": 2,
     "name": "InfoHub",
-    "version": "1.4.0",
+    "version": "1.4.1",
     
     "description": "Airport live data streaming kiosk app for Chrome",
     "icons": { 

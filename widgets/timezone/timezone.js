@@ -2,9 +2,16 @@
 var timezone = {};
 
 //Global Variables
+/**
+ * API key for accessing the timezone API.
+ * @type string
+ */
 timezone.API_KEY = 'AIzaSyCEc-ILEMoraGX8sL0pMdgtfqSq2kOkleo';
 
-//Timezone Locations
+/**
+ * Locations used for the world clocks.
+ * @type array
+ */
 timezone.VIEW_LOCATIONS = [
     'Los Angeles',
     'Denver',
@@ -14,7 +21,12 @@ timezone.VIEW_LOCATIONS = [
     'Beijing'
 ];
 
-timezone.initialize = function() {    
+/**
+ * Initializes the timezone widget
+ * @returns {undefined}
+ */
+timezone.initialize = function()
+{    
     for (var i = 0; i < timezone.VIEW_LOCATIONS.length; i++) {
         var address = timezone.VIEW_LOCATIONS[i];
         timezone.v.find('.zones').append(timezone.createTimezoneDiv(address));
@@ -26,7 +38,14 @@ timezone.initialize = function() {
     timezone.updateClocks();
 };
 
-timezone.setLocation = function(location) {
+/**
+ * Resets the widget to display data based on a new location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @returns {undefined}
+ */
+timezone.setLocation = function(location)
+{
     timezone.w.find('.clock').replaceWith(timezone.createTimezoneDiv(location.city, true));
     //timezone.w.append(timezone.createTimezoneDiv(location.city));
     
@@ -37,7 +56,18 @@ timezone.setLocation = function(location) {
     timezone.getOffset(location, timezone.getClockClass(location.city));
 };
 
-timezone.createTimezoneDiv = function(address, isWidget, addressClass) {
+/**
+ * Creates an element that will contain information about a timezone.
+ * @param {string} address - The address to use to set the clock that will
+ *      be displayed in the timezone element.
+ * @param {boolean} isWidget - Determines whether the clock will be displayed
+ *      in the widget or in the view.
+ * @param {string} addressClass - The class that will be added to the
+ *      timezone element.
+ * @returns {jQuery element}
+ */
+timezone.createTimezoneDiv = function(address, isWidget, addressClass)
+{
     if (typeof addressClass !== 'string') {
         addressClass = timezone.getClockClass(address);
     }
@@ -67,7 +97,13 @@ timezone.createTimezoneDiv = function(address, isWidget, addressClass) {
     }
     return clock;
 };
-timezone.createClockFaceDiv = function() {
+
+/**
+ * Creates an element that contains visual clock face.
+ * @returns {jQuery element}
+ */
+timezone.createClockFaceDiv = function()
+{
     var clock = $('<div/>').addClass('clock-face');
     for (var i = 0; i < 12; i++) {
         clock.append($('<div/>').addClass('hour-mark').css('transform', 'rotate(' + (i * 30) + 'deg)'));
@@ -82,14 +118,31 @@ timezone.createClockFaceDiv = function() {
     
     return clock;
 };
-timezone.getClockClass = function(address) {
+
+/**
+ * Creates a class for a clock item from its address.
+ * @param {string} address - The address to use to create the
+ *      class name.
+ * @returns {string}
+ */
+timezone.getClockClass = function(address)
+{
     if (typeof address === 'string') {
         return address.toLowerCase().replace(/\s+/g, '');
     }
     return '';
 };
 
-timezone.getOffset = function(location, locationClass) {
+/**
+ * Sets the clock's offset from the UST, from its location.
+ * @param {location} location - The location object that defines the
+ *      location for the widget to reference.
+ * @param {string} locationClass - The class of the clock that needs
+ *      to be offset.
+ * @returns {undefined}
+ */
+timezone.getOffset = function(location, locationClass)
+{
     var request = [];
     request.push('https://maps.googleapis.com/maps/api/timezone/json');
     request.push('?location=');
@@ -113,6 +166,10 @@ timezone.getOffset = function(location, locationClass) {
     });
 };
 
+/**
+ * Update the clock time for each of the clocks.
+ * @returns {undefined}
+ */
 timezone.updateClocks = function() {    
     var clocks = timezone.wv.find('.clock').add($('.global.clock'));
     clocks.each(function() {
@@ -122,6 +179,11 @@ timezone.updateClocks = function() {
     setTimeout(timezone.updateClocks, 500);
 };
 
+/**
+ * Update a clock's time.
+ * @param {jQuery element} selector - The clock that will be updated.
+ * @returns {undefined}
+ */
 timezone.updateClock = function(selector) {
     var utc = new Date();
     var offset = parseFloat(selector.attr('rawOffset')) * 1000;
