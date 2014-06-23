@@ -5,18 +5,22 @@ places.events = {};
 places.pagination = {};
 
 places.checkScript = function() {
-    return google && google.maps && google.maps.places;
+    if (typeof google !== 'undefined') {
+        return google.maps && google.maps.places;
+    }
+    return false;
 };
 
 places.getScriptUrl = function() {
-    return 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false';
+    return 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&callback=places.callback';
+};
+
+places.callback = function() {
+    places.service = new google.maps.places.PlacesService(document.createElement('places-service'));
 };
 
 places.messageHandler = function(e) {
     places.events[e.data.widget] = e;
-    if (typeof places.service === 'undefined') {
-        places.service = new google.maps.places.PlacesService(document.createElement('places-service'));
-    }
     
     if (e.data.reference !== undefined) {
         places.getDetails(e.data.reference, e);
@@ -79,14 +83,14 @@ places.getDetails = function(reference, event) {
         var message = {
             'script': 'places',
             'widget': event.data.widget,
-            'result': deepCopySafeMessage(resultCopy),
+            'result': resultCopy,
             'status': status
         };
         window.sandbox.returnMessage(event, message);
     });
 };
 places.createPlaceResultMessage = function(result) {
-    var copy = deepCopySafeMessage(result);
+    var copy = sandbox.deepCopySafeMessage(result);
     if (copy.photos === undefined) {
         copy.photos = [];
     }

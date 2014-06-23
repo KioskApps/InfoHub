@@ -39,7 +39,7 @@ live.PARALLAX_SPEED = 20;
  * An enumerator used to determine where a widget's view will be opened.
  * @type Enum
  */
-live.WidgetType = {'STANDARD': 'standard', 'SUPPLEMENTAL': 'supplemental'}
+live.WidgetType = {'STANDARD': 'standard', 'SUPPLEMENTAL': 'supplemental'};
 
 /* Initialization */
 $(document).ready(function()
@@ -54,7 +54,6 @@ $(document).ready(function()
 live.initialize = function()
 {
     live.initializeStillThere();
-    sandbox.initialize();
     live.initializeParallax();
     live.initializeWidgets();
     live.initializeListeners();
@@ -113,6 +112,9 @@ live.initializeWidgets = function()
 
 /**
  * Initializes a widget
+ * @param {string} widget the name of the widget
+ * @param {jQuery} appendElement the jQuery selector to append the widget to
+ * @param {string} type the type of widget (defined in live.WidgetType)
  * @returns {undefined}
  */
 live.initializeWidget = function(widget, appendElement, type)
@@ -207,12 +209,11 @@ live.hideWidgets = function(callback)
     }).promise().done(function()
     {
         $('#widgets').trigger('hideWidgetsComplete');
-        if(callback != undefined)
-        {
+        if(typeof callback !== 'undefined') {
             callback();
         }
     });
-}
+};
 
 /**
  * Updates the global placesLoadedCount variable and
@@ -222,14 +223,14 @@ live.hideWidgets = function(callback)
 live.updatePlacesLoaded = function()
 {
     live.placesLoadedCount++;
-    if(live.placesLoadedCount == live.standardWidgetsCount)
+    if(live.placesLoadedCount === live.standardWidgetsCount)
     {
         setTimeout(function()
         {    
             live.showWidgets();
         }, 1500);
     }
-}
+};
 
 /**
  * Shows all of the standard widgets 
@@ -249,12 +250,12 @@ live.showWidgets = function(callback)
     }).promise().done(function()
     {
         $('#widgets').trigger('showWidgetsComplete');
-        if(callback != undefined)
+        if(typeof callback !== 'undefined')
         {
             callback();
         }
     }); 
-}
+};
 
 /**
  * Changes the size of the current city text.
@@ -274,7 +275,7 @@ live.setCityDisplay = function()
     
     var activeAreaHeight = $('section.content .display').outerHeight() - $('section.content .display .static-widgets').outerHeight();
     $('.active').css('height', activeAreaHeight);
-}
+};
 
 /* View Manipulation */
 /**
@@ -292,7 +293,7 @@ live.validateAddView = function(selector, widgetType)
     var supplementalViewPanelVisible = supplementalViewPanel.hasClass('visible');
     var added = false;
     
-    if(widgetType == live.WidgetType.STANDARD)
+    if(widgetType === live.WidgetType.STANDARD)
     {        
         if(viewPanelVisible)
         {
@@ -306,7 +307,7 @@ live.validateAddView = function(selector, widgetType)
             added=true;
         }
     }
-    else if(widgetType == live.WidgetType.SUPPLEMENTAL)
+    else if(widgetType === live.WidgetType.SUPPLEMENTAL)
     {
         if(supplementalViewPanelVisible)
         {
@@ -337,7 +338,7 @@ live.addView = function(selector, widgetType)
     var supplementalViewPanelVisible = supplementalViewPanel.hasClass('visible');
     var added = false;
     
-    if(widgetType == live.WidgetType.STANDARD)
+    if(widgetType === live.WidgetType.STANDARD)
     {        
         if(viewPanelVisible)
         {
@@ -374,7 +375,7 @@ live.addView = function(selector, widgetType)
             added=true;
         }
     }
-    else if(widgetType == live.WidgetType.SUPPLEMENTAL)
+    else if(widgetType === live.WidgetType.SUPPLEMENTAL)
     {
         if(supplementalViewPanelVisible)
         {
@@ -422,7 +423,7 @@ live.showViewPanel = function(callback)
     });
     viewPanel.addClass('visible');
     $('section.content>.display').addClass('shared');
-}
+};
 
 /**
  * Hides the view panel 
@@ -443,7 +444,7 @@ live.hideViewPanel = function(callback)
     });
     viewPanel.removeClass('visible');
     $('section.content>.display').removeClass('shared');
-}
+};
 
 /**
  * Shows the supplemental view panel 
@@ -464,7 +465,7 @@ live.showSupplementalViewPanel = function(callback)
     });
     viewPanel.addClass('visible');
     $('#widgets-container').addClass('shared');
-}
+};
 
 /**
  * Hides the supplemental view panel 
@@ -485,7 +486,7 @@ live.hideSupplementalViewPanel = function(callback)
     });
     viewPanel.removeClass('visible');
     $('#widgets-container').removeClass('shared');
-}
+};
 
 /**
  * Adds a view to a view panel.
@@ -498,7 +499,7 @@ live.hideSupplementalViewPanel = function(callback)
 live.openView = function(viewPanel, selector)
 {
     viewPanel.append(selector);
-}
+};
 /**
  * Closes a view.
  * @param {jQuery element} viewPanel - The view panel that holds a view that
@@ -514,7 +515,7 @@ live.closeView = function(viewPanel, callback)
     {
         callback();
     }
-}
+};
 
 /**
  * Closes both view panels and the views inside them.
@@ -540,7 +541,7 @@ live.closeAll = function()
         view.trigger('viewPanelHideComplete');
         live.closeView(viewPanel, function()
         {
-            if(viewWidget != undefined)
+            if(typeof viewWidget !== 'undefined')
             {
                 viewWidget.js.viewEnd();
             }
@@ -552,13 +553,13 @@ live.closeAll = function()
         supplementalView.trigger('viewPanelHideComplete');
         live.closeView(supplementalViewPanel, function()
         {
-            if(supplementalViewWidget != undefined)
+            if(typeof supplementalViewWidget !== 'undefined')
             {
                 supplementalViewWidget.js.viewEnd();
             }
         });
     });
-}
+};
 
 
 
@@ -573,18 +574,19 @@ live.closeAll = function()
  */
 live.getExternalImage = function(url, callback)
 {
-    try
-    {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = function(event){ callback(window.URL.createObjectURL(xhr.response));};
-        xhr.open('GET', url, true);
-        xhr.send(null);
-    }
-    catch(exception)
-    {
-        console.log(exception.message);
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                if (typeof callback === 'function') {
+                    callback(window.URL.createObjectURL(xhr.response));
+                }
+            }
+        } 
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
 };
 
 /**
@@ -598,12 +600,12 @@ live.getWidgetName = function(element)
     var classes = element.attr('class').split(/\s+/);
     for(var i=0; i<classes.length; i++)
     {
-        if(classes[i] != 'view' && classes[i] != 'places')
+        if(classes[i] !== 'view' && classes[i] !== 'places')
         {
             return classes[i];
         }
     }
-}
+};
 
 /**
  * Gets a widget from a name.
@@ -620,9 +622,9 @@ live.getWidgetFromName = function(name)
     }
     for(var i=0; i<live.widgets.length; i++)
     {
-        if(live.widgets[i].name == name)
+        if(live.widgets[i].name === name)
         {
             return live.widgets[i];
         }
     }
-}
+};

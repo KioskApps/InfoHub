@@ -143,7 +143,7 @@ shopping.UpdateService = function(results)
         for(var i = 0; i < self.results.results.length; i++)
         {
             var div = self.results.getContentDiv(i);
-            if(div != undefined)
+            if(typeof div !== 'undefined')
             {
                 div.click(function(e)
                 {
@@ -174,7 +174,7 @@ shopping.UpdateService = function(results)
 
             setTimeout(self.update, shopping.UPDATE_INTERVAL);
         }
-    }
+    };
     
     /**
      * Stops the widget slider.
@@ -193,7 +193,7 @@ shopping.UpdateService = function(results)
      */
     this.highlightClickHandler = function(e, view)
     {
-        if(view == undefined)
+        if(typeof view === 'undefined')
         {
             $(e.currentTarget).clone().appendTo(shopping.v.find('.detail').empty()).removeClass('highlight');
         }
@@ -219,8 +219,8 @@ shopping.UpdateService = function(results)
             self.highlightClickHandler(e, view);
         });
         
-        slider.navigateTo($('.slider', shopping.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
-    }
+        slider.slide($('.slider', shopping.w), current, slider.Direction.RIGHT).on(slider.Event.AFTER_OPEN, function(){self.animateWidgetData(widget);});
+    };
     
     /**
      * Animates the data that appears on the widget.
@@ -246,6 +246,6 @@ shopping.UpdateService = function(results)
             $(this).velocity({opacity:1, translateZ:0, translateX: position}, {'easing':[ 250, 25 ], 'delay': (starCount * 150)});
             starCount++;
         });
-    }
+    };
     
 };

@@ -154,7 +154,7 @@ maps.layersUpdate = function()
     {
         maps.layersIndex = 0;
     }    
-}
+};
 
 /**
  * Adds a marker to the map.

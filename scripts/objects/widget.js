@@ -136,7 +136,7 @@ function Widget(name, html, appendElement, type)
      * Toggles the widget's view between open and closed.
      * @param {boolean} dontHide - a boolean to determine whether or not 
      *      to hide the view panel when toggled.
-     * @param {boolean} supressWidgetAnimation - a boolean to determine
+     * @param {boolean} surpressWidgetAnimation - a boolean to determine
      *      whether or not to surpress the supplemental widget animations.
      * @returns {undefined}
      */
@@ -171,7 +171,7 @@ function Widget(name, html, appendElement, type)
         {
             setTimeout(function(){self.js.setLocation(live.location);}, 300);
         }
-    }
+    };
     
     /**
      * Performs closedown operations when the view is closed.
@@ -181,7 +181,7 @@ function Widget(name, html, appendElement, type)
     {
         live.addView(self.view, self.type);        
         self.js.viewEnd();
-    }
+    };
     
     /**
      * Animates widgets to facilitate a view being added.
@@ -190,7 +190,7 @@ function Widget(name, html, appendElement, type)
     this.addViewAnimations = function()
     {
         self.widget.velocity({scale: .95}, {duration:100}).velocity({scale: 1}, {easing: [250, 10], duation:100});
-        if(self.type == live.WidgetType.STANDARD)
+        if(self.type === live.WidgetType.STANDARD)
         {
             var secondaryWidgets = $('.static-widgets .main .widgets .supplemental-widgets .widget');
             var widgetCount = 0;
@@ -216,7 +216,7 @@ function Widget(name, html, appendElement, type)
         {
             self.widget.trigger('addViewAnimationsComplete');
         }
-    }
+    };
     
     /**
      * Animates widgets to facilitate a view being removed.
@@ -231,7 +231,7 @@ function Widget(name, html, appendElement, type)
             self.widget.velocity({scale: .95}, {duration:100}).velocity({scale: 1}, {easing: [250, 10], duation:100});
         }
         self.view.unbind('viewPanelHideComplete').on('viewPanelHideComplete', this.resetSupplementalWidgets);
-        if(self.type == live.WidgetType.STANDARD)
+        if(self.type === live.WidgetType.STANDARD)
         {
             var secondaryWidgets = $('.static-widgets .main .widgets .supplemental-widgets .widget');
             var widgetCount = 0;
@@ -249,7 +249,7 @@ function Widget(name, html, appendElement, type)
         {
             self.widget.trigger('removeViewAnimationsComplete');
         }
-    }
+    };
     
     /**
      * Animates supplemental widgets to their initial state.
@@ -268,7 +268,7 @@ function Widget(name, html, appendElement, type)
         });
 
         secondaryWidgets.removeClass('small');
-    }
+    };
     
     /**
      * Creates an expected function in case it is not created manually.
@@ -277,7 +277,7 @@ function Widget(name, html, appendElement, type)
      */
     var initializeFunction = function(name) 
     {
-        if(name == 'toggleView')
+        if(name === 'toggleView')
         {
             self.js[name] = self.toggleView;
         }

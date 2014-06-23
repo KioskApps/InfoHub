@@ -100,6 +100,8 @@
             }
             var targetSlide = $('<div/>').addClass('slide').append($(page));
             open(slideContainer, targetSlide, direction);
+            //Temporary fix for widget code
+            return targetSlide;
         }
     };
 

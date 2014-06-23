@@ -244,7 +244,7 @@ places.PlaceResults = function(widget, data, location)
             var resultDiv = {'name': self.results[i].name, 'viewDiv': div, 'widgetDiv': widgetDiv};
             self.resultsDivs.push(resultDiv);
         }
-    }
+    };
     
     /**
      * Sets all the data, in the page elements, for a result
@@ -255,7 +255,7 @@ places.PlaceResults = function(widget, data, location)
      */
     this.populateContentDiv = function(index, type)
     {
-        if(type == 'w')
+        if(type === 'w')
         {
             var div = places.createWidgetContentDiv(index).attr('data-index', index).addClass('highlight');
         }
@@ -281,10 +281,10 @@ places.PlaceResults = function(widget, data, location)
     this.getContentDiv = function(index, type)
     {
         var resultDiv = self.resultsDivs[index];
-        if(resultDiv != undefined)
+        if(typeof resultDiv !== 'undefined')
         {
             var photoDiv = resultDiv.widgetDiv.find('.photo');
-            if(photoDiv.attr('src') == '')
+            if(photoDiv.attr('src') === '')
             {
                 var newSource = 'images/noImage.jpg';
                 photoDiv.attr('src', newSource);
@@ -292,7 +292,7 @@ places.PlaceResults = function(widget, data, location)
                 photoDiv.attr('src', newSource);
             }
             
-            if(type == 'w')
+            if(type === 'w')
             {
                 return resultDiv.widgetDiv;
             }
@@ -441,7 +441,7 @@ places.updateContentDiv = function(content, data)
  */
 places.mapMarkerHandler = function(address) {
     if (maps) {
-        var address = address.html();
+        address = address.html();
         geocoding.geocode(address, function(location)
         {
             var mapsWidgetDisplayed = ($('#supplemental-view-panel').find('.maps').length > 0);
@@ -453,7 +453,7 @@ places.mapMarkerHandler = function(address) {
                     setTimeout(function()
                     {
                         maps.setMarker(location);
-                        mapsWidget.w.unbind('markerReady')
+                        mapsWidget.w.unbind('markerReady');
                     }, 1000);
                 });
                 mapsWidget.js.toggleView(false, false);

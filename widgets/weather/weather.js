@@ -190,17 +190,17 @@ weather.setTheme = function(day, data)
     {
         backgroundColor = '#1CBBF8';
     }
-    if((data.weather[0].main).toLowerCase() == 'clouds')
+    if((data.weather[0].main).toLowerCase() === 'clouds')
     {
         backgroundColor = '#666666';
     }
-    if((data.weather[0].main).toLowerCase() == 'rain')
+    if((data.weather[0].main).toLowerCase() === 'rain')
     {
         backgroundColor = '#7B45AD';
     }
     
     day.css('background-color', backgroundColor);
-}
+};
 
 /**
  * Creates an element to contain location data.
@@ -247,7 +247,7 @@ weather.createWidgetDiv = function()
             .append($('<div/>').addClass('temp'));
     div.append(temp);
     return div;
-}
+};
 
 /**
  * Gets and icon url for a forecast from the forecast's icon code.
