@@ -156,7 +156,7 @@ dining.UpdateService = function(results)
         {
             self.updateWidget(dining.w);
             self.index++;
-            if(self.index > self.results.results.length)
+            if (self.index >= self.results.results.length)
             {
                 self.index = 0;
             }
